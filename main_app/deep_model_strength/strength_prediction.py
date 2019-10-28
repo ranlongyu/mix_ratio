@@ -1,4 +1,4 @@
-from get_data import main_get_data, data_transform
+from main_app.deep_model_strength.get_data import main_get_data, data_transform
 import torch
 import torch.utils.data as Data
 import numpy as np
