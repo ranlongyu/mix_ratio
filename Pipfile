@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+flask = "*"
+flask-sqlalchemy = "*"
+pymysql = "*"
+numpy = "*"
+tensorflow = "*"
+keras = "*"
+pandas = "*"
+scikit-learn = "*"
+gunicorn = "*"
+torch = "*"
+torchvision = "*"
+
+[requires]
+python_version = "3.6"

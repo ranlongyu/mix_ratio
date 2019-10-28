@@ -1,0 +1,554 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>tensorflow.python.framework.errors_impl.InvalidArgumentError: Tensor dense_input:0, specified in either
+        feed_devices or fetch_devices was not found in the Graph // Werkzeug Debugger</title>
+    <link rel="stylesheet" href="?__debugger__=yes&amp;cmd=resource&amp;f=style.css"
+          type="text/css">
+    <!-- We need to make sure this has a favicon so that the debugger does
+         not by accident trigger a request to /favicon.ico which might
+         change the application state. -->
+    <link rel="shortcut icon"
+          href="?__debugger__=yes&amp;cmd=resource&amp;f=console.png">
+    <script src="?__debugger__=yes&amp;cmd=resource&amp;f=jquery.js"></script>
+    <script src="?__debugger__=yes&amp;cmd=resource&amp;f=debugger.js"></script>
+    <script type="text/javascript">
+        var TRACEBACK = 140336379645848,
+            CONSOLE_MODE = false,
+            EVALEX = true,
+            EVALEX_TRUSTED = false,
+            SECRET = "zEo5xm40dQjiDz4UOrrG";
+    </script>
+</head>
+<body style="background-color: #fff">
+<div class="debugger">
+    <h1>tensorflow.python.framework.errors_impl.InvalidArgumentError</h1>
+    <div class="detail">
+        <p class="errormsg">tensorflow.python.framework.errors_impl.InvalidArgumentError: Tensor dense_input:0,
+            specified in either feed_devices or fetch_devices was not found in the Graph</p>
+    </div>
+    <h2 class="traceback">Traceback <em>(most recent call last)</em></h2>
+    <div class="traceback">
+
+        <ul>
+            <li>
+                <div class="frame" id="frame-140336380371744">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py"</cite>,
+                        line <em class="line">2309</em>,
+                        in <code class="function">__call__</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws"></span> </pre>
+                        <pre class="line before"><span class="ws">    </span>def __call__(self, environ, start_response):</pre>
+                        <pre class="line before"><span class="ws">        </span>&quot;&quot;&quot;The WSGI server calls the Flask application object as the</pre>
+                        <pre class="line before"><span class="ws">        </span>WSGI application. This calls :meth:`wsgi_app` which can be</pre>
+                        <pre class="line before"><span class="ws">        </span>wrapped to applying middleware.&quot;&quot;&quot;</pre>
+                        <pre class="line current"><span class="ws">        </span>return self.wsgi_app(environ, start_response)</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws">    </span>def __repr__(self):</pre>
+                        <pre class="line after"><span class="ws">        </span>return '&lt;%s %r&gt;' % (</pre>
+                        <pre class="line after"><span class="ws">            </span>self.__class__.__name__,</pre>
+                        <pre class="line after"><span class="ws">            </span>self.name,</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372136">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py"</cite>,
+                        line <em class="line">2295</em>,
+                        in <code class="function">wsgi_app</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">            </span>try:</pre>
+                        <pre class="line before"><span class="ws">                </span>ctx.push()</pre>
+                        <pre class="line before"><span class="ws">                </span>response = self.full_dispatch_request()</pre>
+                        <pre class="line before"><span class="ws">            </span>except Exception as e:</pre>
+                        <pre class="line before"><span class="ws">                </span>error = e</pre>
+                        <pre class="line current"><span class="ws">                </span>response = self.handle_exception(e)</pre>
+                        <pre class="line after"><span class="ws">            </span>except:</pre>
+                        <pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]</pre>
+                        <pre class="line after"><span class="ws">                </span>raise</pre>
+                        <pre class="line after"><span class="ws">            </span>return response(environ, start_response)</pre>
+                        <pre class="line after"><span class="ws">        </span>finally:</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372192">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py"</cite>,
+                        line <em class="line">1741</em>,
+                        in <code class="function">handle_exception</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">            </span># if we want to repropagate the exception, we can attempt to</pre>
+                        <pre class="line before"><span class="ws">            </span># raise it with the whole traceback in case we can do that</pre>
+                        <pre class="line before"><span class="ws">            </span># (the function was actually called from the except part)</pre>
+                        <pre class="line before"><span class="ws">            </span># otherwise, we just raise the error again</pre>
+                        <pre class="line before"><span class="ws">            </span>if exc_value is e:</pre>
+                        <pre class="line current"><span class="ws">                </span>reraise(exc_type, exc_value, tb)</pre>
+                        <pre class="line after"><span class="ws">            </span>else:</pre>
+                        <pre class="line after"><span class="ws">                </span>raise e</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws">        </span>self.log_exception((exc_type, exc_value, tb))</pre>
+                        <pre class="line after"><span class="ws">        </span>if handler is None:</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372248">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/_compat.py"</cite>,
+                        line <em class="line">35</em>,
+                        in <code class="function">reraise</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">    </span>from io import StringIO</pre>
+                        <pre class="line before"><span class="ws"></span> </pre>
+                        <pre class="line before"><span class="ws">    </span>def reraise(tp, value, tb=None):</pre>
+                        <pre class="line before"><span class="ws">        </span>if value.__traceback__ is not tb:</pre>
+                        <pre class="line before"><span
+                                class="ws">            </span>raise value.with_traceback(tb)</pre>
+                        <pre class="line current"><span class="ws">        </span>raise value</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws">    </span>implements_to_string = _identity</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws"></span>else:</pre>
+                        <pre class="line after"><span class="ws">    </span>text_type = unicode</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380371856">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py"</cite>,
+                        line <em class="line">2292</em>,
+                        in <code class="function">wsgi_app</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span
+                                class="ws">        </span>ctx = self.request_context(environ)</pre>
+                        <pre class="line before"><span class="ws">        </span>error = None</pre>
+                        <pre class="line before"><span class="ws">        </span>try:</pre>
+                        <pre class="line before"><span class="ws">            </span>try:</pre>
+                        <pre class="line before"><span class="ws">                </span>ctx.push()</pre>
+                        <pre class="line current"><span class="ws">                </span>response = self.full_dispatch_request()</pre>
+                        <pre class="line after"><span class="ws">            </span>except Exception as e:</pre>
+                        <pre class="line after"><span class="ws">                </span>error = e</pre>
+                        <pre class="line after"><span class="ws">                </span>response = self.handle_exception(e)</pre>
+                        <pre class="line after"><span class="ws">            </span>except:</pre>
+                        <pre class="line after"><span class="ws">                </span>error = sys.exc_info()[1]</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372360">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py"</cite>,
+                        line <em class="line">1815</em>,
+                        in <code class="function">full_dispatch_request</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">            </span>request_started.send(self)</pre>
+                        <pre class="line before"><span
+                                class="ws">            </span>rv = self.preprocess_request()</pre>
+                        <pre class="line before"><span class="ws">            </span>if rv is None:</pre>
+                        <pre class="line before"><span
+                                class="ws">                </span>rv = self.dispatch_request()</pre>
+                        <pre class="line before"><span class="ws">        </span>except Exception as e:</pre>
+                        <pre class="line current"><span class="ws">            </span>rv = self.handle_user_exception(e)</pre>
+                        <pre class="line after"><span class="ws">        </span>return self.finalize_request(rv)</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws">    </span>def finalize_request(self, rv, from_error_handler=False):</pre>
+                        <pre class="line after"><span class="ws">        </span>&quot;&quot;&quot;Given the return value from a view function this finalizes</pre>
+                        <pre class="line after"><span class="ws">        </span>the request by converting it into a response and invoking the</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372416">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py"</cite>,
+                        line <em class="line">1718</em>,
+                        in <code class="function">handle_user_exception</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">            </span>return self.handle_http_exception(e)</pre>
+                        <pre class="line before"><span class="ws"></span> </pre>
+                        <pre class="line before"><span
+                                class="ws">        </span>handler = self._find_error_handler(e)</pre>
+                        <pre class="line before"><span class="ws"></span> </pre>
+                        <pre class="line before"><span class="ws">        </span>if handler is None:</pre>
+                        <pre class="line current"><span
+                                class="ws">            </span>reraise(exc_type, exc_value, tb)</pre>
+                        <pre class="line after"><span class="ws">        </span>return handler(e)</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws">    </span>def handle_exception(self, e):</pre>
+                        <pre class="line after"><span class="ws">        </span>&quot;&quot;&quot;Default exception handling that kicks in when an exception</pre>
+                        <pre class="line after"><span class="ws">        </span>occurs that is not caught.  In debug mode the exception will</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372472">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/_compat.py"</cite>,
+                        line <em class="line">35</em>,
+                        in <code class="function">reraise</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">    </span>from io import StringIO</pre>
+                        <pre class="line before"><span class="ws"></span> </pre>
+                        <pre class="line before"><span class="ws">    </span>def reraise(tp, value, tb=None):</pre>
+                        <pre class="line before"><span class="ws">        </span>if value.__traceback__ is not tb:</pre>
+                        <pre class="line before"><span
+                                class="ws">            </span>raise value.with_traceback(tb)</pre>
+                        <pre class="line current"><span class="ws">        </span>raise value</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws">    </span>implements_to_string = _identity</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws"></span>else:</pre>
+                        <pre class="line after"><span class="ws">    </span>text_type = unicode</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380371968">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py"</cite>,
+                        line <em class="line">1813</em>,
+                        in <code class="function">full_dispatch_request</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">        </span>self.try_trigger_before_first_request_functions()</pre>
+                        <pre class="line before"><span class="ws">        </span>try:</pre>
+                        <pre class="line before"><span class="ws">            </span>request_started.send(self)</pre>
+                        <pre class="line before"><span
+                                class="ws">            </span>rv = self.preprocess_request()</pre>
+                        <pre class="line before"><span class="ws">            </span>if rv is None:</pre>
+                        <pre class="line current"><span
+                                class="ws">                </span>rv = self.dispatch_request()</pre>
+                        <pre class="line after"><span class="ws">        </span>except Exception as e:</pre>
+                        <pre class="line after"><span
+                                class="ws">            </span>rv = self.handle_user_exception(e)</pre>
+                        <pre class="line after"><span class="ws">        </span>return self.finalize_request(rv)</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws">    </span>def finalize_request(self, rv, from_error_handler=False):</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372584">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py"</cite>,
+                        line <em class="line">1799</em>,
+                        in <code class="function">dispatch_request</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">        </span># request came with the OPTIONS method, reply automatically</pre>
+                        <pre class="line before"><span class="ws">        </span>if getattr(rule, 'provide_automatic_options', False) \</pre>
+                        <pre class="line before"><span class="ws">           </span>and req.method == 'OPTIONS':</pre>
+                        <pre class="line before"><span class="ws">            </span>return self.make_default_options_response()</pre>
+                        <pre class="line before"><span class="ws">        </span># otherwise dispatch to the handler for that endpoint</pre>
+                        <pre class="line current"><span class="ws">        </span>return self.view_functions[rule.endpoint](**req.view_args)</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws">    </span>def full_dispatch_request(self):</pre>
+                        <pre class="line after"><span class="ws">        </span>&quot;&quot;&quot;Dispatches the request and on top of that performs request</pre>
+                        <pre class="line after"><span class="ws">        </span>pre and postprocessing as well as HTTP exception catching and</pre>
+                        <pre class="line after"><span class="ws">        </span>error handling.</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372640">
+                    <h4>File <cite class="filename">"/home/rly/Desktop/mix_ratio/main_app/routes.py"</cite>,
+                        line <em class="line">46</em>,
+                        in <code class="function">strength_prediction</code></h4>
+                    <div class="source ">
+                        <pre class="line before"><span class="ws"></span> </pre>
+                        <pre class="line before"><span class="ws"></span># 混凝土强度预测</pre>
+                        <pre class="line before"><span class="ws"></span>@app.route('/mixratio/strength', methods=['POST'])</pre>
+                        <pre class="line before"><span class="ws"></span>def strength_prediction():</pre>
+                        <pre class="line before"><span class="ws">    </span>data = json.loads(request.get_data())</pre>
+                        <pre class="line current"><span class="ws">    </span>jresult = presiction(data, scaler=scaler, model=model_strength)</pre>
+                        <pre class="line after"><span class="ws">    </span>return jsonify(jresult), 201</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372080">
+                    <h4>File <cite class="filename">"/home/rly/Desktop/mix_ratio/main_app/deep_model_strength/strength_prediction.py"</cite>,
+                        line <em class="line">76</em>,
+                        in <code class="function">presiction</code></h4>
+                    <div class="source ">
+                        <pre class="line before"><span class="ws">    </span>data_transform(feature)</pre>
+                        <pre class="line before"><span class="ws">    </span>feature = np.array([feature], dtype=float)</pre>
+                        <pre class="line before"><span class="ws">    </span>print(feature)</pre>
+                        <pre class="line before"><span class="ws">    </span>feature = scaler.transform(feature)</pre>
+                        <pre class="line before"><span class="ws">    </span>print(feature)</pre>
+                        <pre class="line current"><span class="ws">    </span>val = model.predict(feature)</pre>
+                        <pre class="line after"><span class="ws">    </span>print(val)</pre>
+                        <pre class="line after"><span class="ws">    </span>jresult = {&quot;state&quot;: 1, &quot;strength&quot;: val}</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws">    </span># jresult = {&quot;state&quot;: -1, &quot;strength&quot;: 0}</pre>
+                        <pre class="line after"><span class="ws">    </span>return jresult</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372304">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/keras/engine/training.py"</cite>,
+                        line <em class="line">1113</em>,
+                        in <code class="function">predict</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">        </span>self._distribution_strategy):</pre>
+                        <pre class="line before"><span class="ws">      </span>return training_distributed.experimental_predict_loop(</pre>
+                        <pre class="line before"><span class="ws">          </span>self, x, verbose=verbose, steps=steps)</pre>
+                        <pre class="line before"><span class="ws">    </span>else:</pre>
+                        <pre class="line before"><span
+                                class="ws">      </span>return training_arrays.predict_loop(</pre>
+                        <pre class="line current"><span class="ws">          </span>self, x, batch_size=batch_size, verbose=verbose, steps=steps)</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws">  </span>def reset_metrics(self):</pre>
+                        <pre class="line after"><span class="ws">    </span>&quot;&quot;&quot;Resets the state of metrics.&quot;&quot;&quot;</pre>
+                        <pre class="line after"><span class="ws">    </span>if hasattr(self, 'metrics'):</pre>
+                        <pre class="line after"><span class="ws">      </span>for m in self.metrics:</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372528">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/keras/engine/training_arrays.py"</cite>,
+                        line <em class="line">329</em>,
+                        in <code class="function">model_iteration</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">        </span>batch_logs = {'batch': batch_index, 'size': len(batch_ids)}</pre>
+                        <pre class="line before"><span class="ws">        </span>callbacks._call_batch_hook(mode, 'begin', batch_index, batch_logs)</pre>
+                        <pre class="line before"><span class="ws">        </span>progbar.on_batch_begin(batch_index, batch_logs)</pre>
+                        <pre class="line before"><span class="ws"></span> </pre>
+                        <pre class="line before"><span class="ws">        </span># Get outputs.</pre>
+                        <pre class="line current"><span class="ws">        </span>batch_outs = f(ins_batch)</pre>
+                        <pre class="line after"><span
+                                class="ws">        </span>if not isinstance(batch_outs, list):</pre>
+                        <pre class="line after"><span class="ws">          </span>batch_outs = [batch_outs]</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws">        </span># Aggregate results.</pre>
+                        <pre class="line after"><span class="ws">        </span>if batch_index == 0:</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372696">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/keras/backend.py"</cite>,
+                        line <em class="line">3073</em>,
+                        in <code class="function">__call__</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">    </span># Refresh callable if anything has changed.</pre>
+                        <pre class="line before"><span class="ws">    </span>if (self._callable_fn is None or feed_arrays != self._feed_arrays or</pre>
+                        <pre class="line before"><span
+                                class="ws">        </span>symbol_vals != self._symbol_vals or</pre>
+                        <pre class="line before"><span class="ws">        </span>feed_symbols != self._feed_symbols or self.fetches != self._fetches or</pre>
+                        <pre class="line before"><span class="ws">        </span>session != self._session):</pre>
+                        <pre class="line current"><span class="ws">      </span>self._make_callable(feed_arrays, feed_symbols, symbol_vals, session)</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span
+                                class="ws">    </span>fetched = self._callable_fn(*array_vals,</pre>
+                        <pre class="line after"><span class="ws">                                </span>run_metadata=self.run_metadata)</pre>
+                        <pre class="line after"><span class="ws">    </span>self._call_fetch_callbacks(fetched[-len(self._fetches):])</pre>
+                        <pre class="line after"><span class="ws">    </span>return nest.pack_sequence_as(self._outputs_structure,</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380371800">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/keras/backend.py"</cite>,
+                        line <em class="line">3019</em>,
+                        in <code class="function">_make_callable</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">    </span>callable_opts.target.append(self.updates_op.name)</pre>
+                        <pre class="line before"><span class="ws">    </span># Handle run_options.</pre>
+                        <pre class="line before"><span class="ws">    </span>if self.run_options:</pre>
+                        <pre class="line before"><span class="ws">      </span>callable_opts.run_options.CopyFrom(self.run_options)</pre>
+                        <pre class="line before"><span class="ws">    </span># Create callable.</pre>
+                        <pre class="line current"><span class="ws">    </span>callable_fn = session._make_callable_from_options(callable_opts)</pre>
+                        <pre class="line after"><span class="ws">    </span># Cache parameters corresponding to the generated callable, so that</pre>
+                        <pre class="line after"><span class="ws">    </span># we can detect future mismatches and refresh the callable.</pre>
+                        <pre class="line after"><span class="ws">    </span>self._callable_fn = callable_fn</pre>
+                        <pre class="line after"><span class="ws">    </span>self._feed_arrays = feed_arrays</pre>
+                        <pre class="line after"><span class="ws">    </span>self._feed_symbols = feed_symbols</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380371912">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/client/session.py"</cite>,
+                        line <em class="line">1471</em>,
+                        in <code class="function">_make_callable_from_options</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws"></span> </pre>
+                        <pre class="line before"><span class="ws">    </span>Returns:</pre>
+                        <pre class="line before"><span class="ws">      </span>A handle to the new callable.</pre>
+                        <pre class="line before"><span class="ws">    </span>&quot;&quot;&quot;</pre>
+                        <pre class="line before"><span class="ws">    </span>self._extend_graph()</pre>
+                        <pre class="line current"><span class="ws">    </span>return BaseSession._Callable(self, callable_options)</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws"></span>@tf_export(v1=['Session'])</pre>
+                        <pre class="line after"><span class="ws"></span>class Session(BaseSession):</pre>
+                        <pre class="line after"><span class="ws">  </span>&quot;&quot;&quot;A class for running TensorFlow operations.</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372024">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/client/session.py"</cite>,
+                        line <em class="line">1425</em>,
+                        in <code class="function">__init__</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">      </span>options_ptr = tf_session.TF_NewBufferFromString(</pre>
+                        <pre class="line before"><span class="ws">          </span>compat.as_bytes(callable_options.SerializeToString()))</pre>
+                        <pre class="line before"><span class="ws">      </span>try:</pre>
+                        <pre class="line before"><span class="ws">        </span>with errors.raise_exception_on_not_ok_status() as status:</pre>
+                        <pre class="line before"><span class="ws">          </span>self._handle = tf_session.TF_SessionMakeCallable(</pre>
+                        <pre class="line current"><span class="ws">              </span>session._session, options_ptr, status)</pre>
+                        <pre class="line after"><span class="ws">      </span>finally:</pre>
+                        <pre class="line after"><span class="ws">        </span>tf_session.TF_DeleteBuffer(options_ptr)</pre>
+                        <pre class="line after"><span class="ws"></span> </pre>
+                        <pre class="line after"><span class="ws">    </span>def __call__(self, *args, **kwargs):</pre>
+                        <pre class="line after"><span class="ws">      </span># TODO(b/74355905): Support argument and return value nested structures,</pre>
+                    </div>
+                </div>
+
+            <li>
+                <div class="frame" id="frame-140336380372752">
+                    <h4>File <cite class="filename">"/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/framework/errors_impl.py"</cite>,
+                        line <em class="line">528</em>,
+                        in <code class="function">__exit__</code></h4>
+                    <div class="source library">
+                        <pre class="line before"><span class="ws">    </span>try:</pre>
+                        <pre class="line before"><span class="ws">      </span>if c_api.TF_GetCode(self.status.status) != 0:</pre>
+                        <pre class="line before"><span class="ws">        </span>raise _make_specific_exception(</pre>
+                        <pre class="line before"><span class="ws">            </span>None, None,</pre>
+                        <pre class="line before"><span class="ws">            </span>compat.as_text(c_api.TF_Message(self.status.status)),</pre>
+                        <pre class="line current"><span class="ws">            </span>c_api.TF_GetCode(self.status.status))</pre>
+                        <pre class="line after"><span class="ws">    </span># Delete the underlying status object from memory otherwise it stays alive</pre>
+                        <pre class="line after"><span class="ws">    </span># as there is a reference to status from this from the traceback due to</pre>
+                        <pre class="line after"><span class="ws">    </span># raise.</pre>
+                        <pre class="line after"><span class="ws">    </span>finally:</pre>
+                        <pre class="line after"><span class="ws">      </span>del self.status</pre>
+                    </div>
+                </div>
+        </ul>
+        <blockquote>tensorflow.python.framework.errors_impl.InvalidArgumentError: Tensor dense_input:0, specified in
+            either feed_devices or fetch_devices was not found in the Graph
+        </blockquote>
+    </div>
+
+    <div class="plain">
+        <form action="/?__debugger__=yes&amp;cmd=paste" method="post">
+            <p>
+                <input type="hidden" name="language" value="pytb">
+                This is the Copy/Paste friendly version of the traceback. <span
+                    class="pastemessage">You can also paste this traceback into
+      a <a href="https://gist.github.com/">gist</a>:
+      <input type="submit" value="create paste"></span>
+            </p>
+            <textarea cols="50" rows="10" name="code" readonly>Traceback (most recent call last):
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py&quot;, line 2309, in __call__
+    return self.wsgi_app(environ, start_response)
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py&quot;, line 2295, in wsgi_app
+    response = self.handle_exception(e)
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py&quot;, line 1741, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/_compat.py&quot;, line 35, in reraise
+    raise value
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py&quot;, line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py&quot;, line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py&quot;, line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/_compat.py&quot;, line 35, in reraise
+    raise value
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py&quot;, line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py&quot;, line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File &quot;/home/rly/Desktop/mix_ratio/main_app/routes.py&quot;, line 46, in strength_prediction
+    jresult = presiction(data, scaler=scaler, model=model_strength)
+  File &quot;/home/rly/Desktop/mix_ratio/main_app/deep_model_strength/strength_prediction.py&quot;, line 76, in presiction
+    val = model.predict(feature)
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/keras/engine/training.py&quot;, line 1113, in predict
+    self, x, batch_size=batch_size, verbose=verbose, steps=steps)
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/keras/engine/training_arrays.py&quot;, line 329, in model_iteration
+    batch_outs = f(ins_batch)
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/keras/backend.py&quot;, line 3073, in __call__
+    self._make_callable(feed_arrays, feed_symbols, symbol_vals, session)
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/keras/backend.py&quot;, line 3019, in _make_callable
+    callable_fn = session._make_callable_from_options(callable_opts)
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/client/session.py&quot;, line 1471, in _make_callable_from_options
+    return BaseSession._Callable(self, callable_options)
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/client/session.py&quot;, line 1425, in __init__
+    session._session, options_ptr, status)
+  File &quot;/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/framework/errors_impl.py&quot;, line 528, in __exit__
+    c_api.TF_GetCode(self.status.status))
+tensorflow.python.framework.errors_impl.InvalidArgumentError: Tensor dense_input:0, specified in either feed_devices or fetch_devices was not found in the Graph</textarea>
+        </form>
+    </div>
+    <div class="explanation">
+        The debugger caught an exception in your WSGI application. You can now
+        look at the traceback which led to the error. <span class="nojavascript">
+  If you enable JavaScript you can also use additional features such as code
+  execution (if the evalex feature is enabled), automatic pasting of the
+  exceptions and much more.</span>
+    </div>
+    <div class="footer">
+        Brought to you by <strong class="arthur">DON'T PANIC</strong>, your
+        friendly Werkzeug powered traceback interpreter.
+    </div>
+</div>
+
+<div class="pin-prompt">
+    <div class="inner">
+        <h3>Console Locked</h3>
+        <p>
+            The console is locked and needs to be unlocked by entering the PIN.
+            You can find the PIN printed out on the standard output of your
+            shell that runs the server.
+            <form>
+        <p>PIN:
+            <input type=text name=pin size=14>
+            <input type=submit name=btn value="Confirm Pin">
+            </form>
+    </div>
+</div>
+</body>
+</html>
+
+<!--
+
+Traceback (most recent call last):
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py", line 2309, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py", line 2295, in wsgi_app
+    response = self.handle_exception(e)
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py", line 1741, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/_compat.py", line 35, in reraise
+    raise value
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py", line 2292, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py", line 1815, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py", line 1718, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/_compat.py", line 35, in reraise
+    raise value
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py", line 1813, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/flask/app.py", line 1799, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/rly/Desktop/mix_ratio/main_app/routes.py", line 46, in strength_prediction
+    jresult = presiction(data, scaler=scaler, model=model_strength)
+  File "/home/rly/Desktop/mix_ratio/main_app/deep_model_strength/strength_prediction.py", line 76, in presiction
+    val = model.predict(feature)
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/keras/engine/training.py", line 1113, in predict
+    self, x, batch_size=batch_size, verbose=verbose, steps=steps)
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/keras/engine/training_arrays.py", line 329, in model_iteration
+    batch_outs = f(ins_batch)
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/keras/backend.py", line 3073, in __call__
+    self._make_callable(feed_arrays, feed_symbols, symbol_vals, session)
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/keras/backend.py", line 3019, in _make_callable
+    callable_fn = session._make_callable_from_options(callable_opts)
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1471, in _make_callable_from_options
+    return BaseSession._Callable(self, callable_options)
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1425, in __init__
+    session._session, options_ptr, status)
+  File "/home/rly/anaconda3/envs/flask/lib/python3.6/site-packages/tensorflow/python/framework/errors_impl.py", line 528, in __exit__
+    c_api.TF_GetCode(self.status.status))
+tensorflow.python.framework.errors_impl.InvalidArgumentError: Tensor dense_input:0, specified in either feed_devices or fetch_devices was not found in the Graph
+
+-->

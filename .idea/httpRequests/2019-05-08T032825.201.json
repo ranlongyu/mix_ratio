@@ -1,0 +1,24 @@
+{
+  "long": 1,
+  "result": [
+    {
+      "coarse_aggregate_1": 447.23,
+      "coarse_aggregate_2": 653.03,
+      "expansion_breed_grade": 0.0,
+      "fine_aggregate_1": 199.19,
+      "fine_aggregate_2": 334.64,
+      "fine_aggregate_3": 262.92,
+      "mix_apparent_density": 2377.28,
+      "mix_cement_consumption": 243.04,
+      "mix_fly_ash_dosage": 26.01,
+      "mix_limestone_powder_consumption": 43.01,
+      "mix_other_materials": 0,
+      "mix_slag_powder_consumption": 0.0,
+      "mix_water_consumption": 161.4,
+      "mix_water_reducing_agent_dosage": 6.81,
+      "predict_28dstrength": 40.26,
+      "time": 3.03,
+      "unit_price": 2334.27
+    }
+  ]
+}
