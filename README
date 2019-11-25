@@ -24,12 +24,7 @@
 ├── gunicorn.py  # gunicorn容器配置文件
 ├── main_app
 │   ├── create_db.py  # 可以通过该文件创建数据库
-│   ├── deep_model_mix_ratio  # 简单的混凝土强度预测模型，只使用了原材料用量预测
-│   │   ├── BPnet.py
-│   │   ├── BPtrain_model.py
-│   │   ├── Expert_repository.py
-│   │   └── weight.h6
-│   ├── deep_model_strength  # 复杂的混凝土强度预测模型，使用了原材料用量和质量预测
+│   ├── deep_model_strength  # 混凝土强度预测模型，使用了原材料用量和质量预测
 │   │   ├── get_data.py  # 从数据库中获取数据
 │   │   └── torch_model_params.pkl
 │   ├── initial_screen.py  # 初筛
