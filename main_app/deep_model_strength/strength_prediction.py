@@ -10,7 +10,7 @@ TORCH_MODEL_WEIGHTS_FILE = 'main_app/deep_model_strength/torch_model_params.pkl'
 # 创建模型
 def creat_torch_model():
     model = torch.nn.Sequential(
-        torch.nn.Linear(43, 60),
+        torch.nn.Linear(42, 60),
         torch.nn.ReLU(),
         torch.nn.Linear(60, 30),
         torch.nn.Tanh(),
@@ -83,7 +83,6 @@ def presiction(data, scaler, model):
                    data["mix_limestone_powder_consumption"],
                    data["mix_expansion_agent_dosage"],
                    data["mix_water_consumption"],
-                   data["mix_recycled_water_consumption"],
                    data["cement_breed_grade"],
                    data["cement_28d_compression"],
                    data["reduce_breed_grade"],

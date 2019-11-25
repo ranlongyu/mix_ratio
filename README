@@ -1,0 +1,51 @@
+## 使用说明
+
+### 安装部署
+1. 安装Pipfile中的环境；
+2. 配置config.py中的数据库，如果没有数据库，可以使用main_app.create_db.py创建数据库，再通过data_process中写入数据到数据库；
+3. 配置gunicorn.py中的信息；
+3. 执行`nohup gunicorn -c gunicorn.py main_mix_ratio:app &`命令。
+
+### 文件说明
+```
+.
+├── config.py  # 数据库配置信息
+├── data_process  # 把原始数据处理后写入数据库
+│   ├── csv表
+│   │   ├── 粉煤灰质量检测列表.csv
+│   │   ├── 矿渣粉质量检测列表.csv
+│   │   ├── 膨胀剂质量检测列表.csv
+│   │   ├── 施工配合比相关数据.csv
+│   │   ├── 石灰石粉质量检测列表.csv
+│   │   ├── 水泥质检列表.csv
+│   │   └── 外加剂质量台账列表.csv
+│   ├── read_data_from_csv.py
+│   └── store_to_database.py
+├── gunicorn.py  # gunicorn容器配置文件
+├── main_app
+│   ├── create_db.py  # 可以通过该文件创建数据库
+│   ├── deep_model_mix_ratio  # 简单的混凝土强度预测模型，只使用了原材料用量预测
+│   │   ├── BPnet.py
+│   │   ├── BPtrain_model.py
+│   │   ├── Expert_repository.py
+│   │   └── weight.h6
+│   ├── deep_model_strength  # 复杂的混凝土强度预测模型，使用了原材料用量和质量预测
+│   │   ├── get_data.py  # 从数据库中获取数据
+│   │   └── torch_model_params.pkl
+│   ├── initial_screen.py  # 初筛
+│   ├── __init__.py
+│   ├── model.py  # 数据库模型
+│   ├── push_mix_ratio.py  # 配合比生成的主文件
+│   ├── restful  # restful测试文件
+│   │   ├── mix_ratio_request.json
+│   │   ├── mix_ratio_response.json
+│   │   ├── strength_request.json
+│   │   └── strength_response.json
+│   ├── routes.py  # 路由
+│   └── templates  # 简单的网页文件
+│       └── index.html
+├── main_mix_ratio.py  # 主函数
+├── Pipfile  # 包含了运行程序需要安装的包
+├── README
+└── test.py
+```

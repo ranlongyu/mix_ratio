@@ -24,7 +24,6 @@ class Mix_ratio_table(db.Model):
     mix_limestone_powder_consumption = db.Column(db.Float(), comment='石灰石粉用量')
     mix_expansion_agent_dosage = db.Column(db.Float(), comment='膨胀剂用量')
     mix_water_consumption = db.Column(db.Float(), comment='水用量')
-    mix_recycled_water_consumption = db.Column(db.Float(), comment='回收水用量')
     mix_apparent_density = db.Column(db.Float(), comment='表观密度')
 
     mix_production_workshop = db.Column(db.String(128), comment='生产车间')

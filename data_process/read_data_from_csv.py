@@ -9,6 +9,7 @@ kuangzhafen_file = "csv表/矿渣粉质量检测列表.csv"
 fenmeihui_file = "csv表/粉煤灰质量检测列表.csv"
 pengzhangji_file = "csv表/膨胀剂质量检测列表.csv"
 
+
 def read_data():
     waijiaji = []
     with open(waijiaji_file) as csvfile:
@@ -205,11 +206,7 @@ def read_data():
             except:
                 new_row.append(-1)
             try:
-                new_row.append(float(row[43]))  # 水用量
-            except:
-                new_row.append(-1)
-            try:
-                new_row.append(float(row[37]))  # 回收水用量
+                new_row.append(float(row[43]) + float(row[37]))  # 水用量+回收水用量
             except:
                 new_row.append(-1)
             try:
@@ -301,6 +298,7 @@ def read_data():
             all_data.append(new_row)
 
     return all_data
+
 
 if __name__ == '__main__':
     d = read_data()

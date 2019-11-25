@@ -29,7 +29,6 @@ def get_data(connect):
           "mix_limestone_powder_consumption," \
           "mix_expansion_agent_dosage," \
           "mix_water_consumption," \
-          "mix_recycled_water_consumption," \
           "cement_breed_grade," \
           "cement_28d_compression," \
           "reduce_breed_grade," \
@@ -105,38 +104,38 @@ def data_transform(feature):
     # 水泥品种等级
     cement_breed_grade_di = {"P·O42.5R": 1, "P·O42.5": 2, "P·O42.5（低碱）": 3}
     try:
-        feature[21] = cement_breed_grade_di.get(feature[21])
+        feature[20] = cement_breed_grade_di.get(feature[20])
     except:
-        feature[21] = -1
+        feature[20] = -1
     # 减水剂品种等级
     reduce_breed_grade = {"聚羧酸高性能减水剂-缓凝型": 1, "聚羧酸高性能减水剂-标准型": 2}
     try:
-        feature[23] = reduce_breed_grade.get(feature[23])
+        feature[22] = reduce_breed_grade.get(feature[22])
     except:
-        feature[23] = -1
+        feature[22] = -1
     # 粉煤灰品种类别
     fly_sample_category_di = {"F类": 1, "C类": 2}
     try:
-        feature[29] = fly_sample_category_di.get(feature[29])
+        feature[28] = fly_sample_category_di.get(feature[28])
     except:
-        feature[29] = -1
+        feature[28] = -1
     # 粉煤灰品种类别
     fly_breed_grade_di = {"Ⅰ级": 1, "Ⅱ级": 2, "Ⅲ级": 3}
     try:
-        feature[30] = fly_breed_grade_di.get(feature[30])
+        feature[29] = fly_breed_grade_di.get(feature[29])
     except:
-        feature[30] = -1
+        feature[29] = -1
     # 矿渣粉品种等级
     try:
-        feature[35] = int(feature[35])
+        feature[34] = int(feature[34])
     except:
-        feature[35] = -1
+        feature[34] = -1
     # 膨胀剂品种等级
     expansion_breed_grade_di = {"Ⅰ型硫铝酸钙类": 1, "Ⅱ型氧化钙类": 2, "Ⅱ型硫铝酸钙-氧化钙类": 3}
     try:
-        feature[40] = expansion_breed_grade_di.get(feature[40])
+        feature[39] = expansion_breed_grade_di.get(feature[39])
     except:
-        feature[40] = -1
+        feature[39] = -1
     # 规范数据
     for i in range(len(feature)):
         if feature[i] == None or feature[i] == -1:
