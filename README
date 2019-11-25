@@ -2,9 +2,14 @@
 
 ### 安装部署
 1. 安装Pipfile中的环境；
-2. 配置config.py中的数据库，如果没有数据库，可以使用main_app.create_db.py创建数据库，再通过data_process中写入数据到数据库；
+2. 配置config.py中的数据库，如果没有数据库:
+    1. 把main_app/__init__.py中`from main_app import model, routes`注释掉；
+    2. 使用main_app.create_db.py创建数据库；
+    3. 通过data_process中写入数据到数据库；
+    4. 去掉注释。
 3. 配置gunicorn.py中的信息；
-3. 执行`nohup gunicorn -c gunicorn.py main_mix_ratio:app &`命令。
+4. 配置main_mix_ratio.py中为`app.run(debug=False)`；
+5. 执行`nohup gunicorn -c gunicorn.py main_mix_ratio:app &`命令。
 
 ### 文件说明
 ```
