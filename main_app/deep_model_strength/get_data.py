@@ -9,8 +9,6 @@ def get_data(connect):
     cursor = db.cursor()
     sql = "select " \
           "mix_28d_strength," \
-          "mix_period," \
-          "mix_concrete_variety," \
           "mix_power_level," \
           "mix_impermeability_rating," \
           "mix_material_requirements," \
@@ -71,71 +69,57 @@ def get_data(connect):
 
 # 把特征转换为数字，无返回值
 def data_transform(feature):
-    # 月份转温度段
-    if feature[0] in [5, 6, 7, 8, 9, '高']:
-        feature[0] = 1
-    elif feature[0] in [12, 1, 2, '中']:
-        feature[0] = 2
-    else:
-        feature[0] = 3
-    # 混凝土品种
-    mix_concrete_variety_di = {"常规混凝土": 1, "抗渗混凝土": 2, "防水混凝土": 3, "补偿收缩混凝土": 4, "水下混凝土": 5, "大体积混凝土": 6, "透水混凝土": 7,
-                               "自密实混凝土": 8, "铁路混凝土": 9, "钢纤维混凝土": 10, "聚丙烯纤维混凝土": 11, "轻骨料混凝土": 12, "重混凝土": 13}
-    try:
-        feature[1] = mix_concrete_variety_di.get(feature[1].split('\\')[0])
-    except:
-        feature[1] = -1
     # 强度等级
     try:
-        feature[2] = int(feature[2][1:])
+        feature[0] = int(feature[0][1:])
     except:
-        feature[2] = -1
+        feature[0] = -1
     # 抗渗等级
     try:
-        feature[3] = int(feature[3][1:])
+        feature[1] = int(feature[1][1:])
     except:
-        feature[3] = -1
+        feature[1] = -1
     # 材料要求
     mix_material_requirements_di = {"细石": 1, "低碱水泥": 2, "GNA": 3, "ZY": 4, "UEA": 5}
     try:
-        feature[4] = mix_material_requirements_di.get(feature[4].split("\\")[0])
+        feature[2] = mix_material_requirements_di.get(feature[2].split("\\")[0])
     except:
-        feature[4] = -1
+        feature[2] = -1
     # 水泥品种等级
     cement_breed_grade_di = {"P·O42.5R": 1, "P·O42.5": 2, "P·O42.5（低碱）": 3}
     try:
-        feature[20] = cement_breed_grade_di.get(feature[20])
+        feature[18] = cement_breed_grade_di.get(feature[18])
     except:
-        feature[20] = -1
+        feature[18] = -1
     # 减水剂品种等级
     reduce_breed_grade = {"聚羧酸高性能减水剂-缓凝型": 1, "聚羧酸高性能减水剂-标准型": 2}
     try:
-        feature[22] = reduce_breed_grade.get(feature[22])
+        feature[20] = reduce_breed_grade.get(feature[20])
     except:
-        feature[22] = -1
+        feature[20] = -1
     # 粉煤灰品种类别
     fly_sample_category_di = {"F类": 1, "C类": 2}
     try:
-        feature[28] = fly_sample_category_di.get(feature[28])
+        feature[26] = fly_sample_category_di.get(feature[26])
     except:
-        feature[28] = -1
+        feature[26] = -1
     # 粉煤灰品种类别
     fly_breed_grade_di = {"Ⅰ级": 1, "Ⅱ级": 2, "Ⅲ级": 3}
     try:
-        feature[29] = fly_breed_grade_di.get(feature[29])
+        feature[27] = fly_breed_grade_di.get(feature[27])
     except:
-        feature[29] = -1
+        feature[27] = -1
     # 矿渣粉品种等级
     try:
-        feature[34] = int(feature[34])
+        feature[32] = int(feature[32])
     except:
-        feature[34] = -1
+        feature[32] = -1
     # 膨胀剂品种等级
     expansion_breed_grade_di = {"Ⅰ型硫铝酸钙类": 1, "Ⅱ型氧化钙类": 2, "Ⅱ型硫铝酸钙-氧化钙类": 3}
     try:
-        feature[39] = expansion_breed_grade_di.get(feature[39])
+        feature[37] = expansion_breed_grade_di.get(feature[37])
     except:
-        feature[39] = -1
+        feature[37] = -1
     # 规范数据
     for i in range(len(feature)):
         if feature[i] == None or feature[i] == -1:

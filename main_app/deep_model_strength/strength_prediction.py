@@ -10,11 +10,11 @@ TORCH_MODEL_WEIGHTS_FILE = 'main_app/deep_model_strength/torch_model_params.pkl'
 # 创建模型
 def creat_torch_model():
     model = torch.nn.Sequential(
-        torch.nn.Linear(42, 60),
+        torch.nn.Linear(40, 60),
         torch.nn.ReLU(),
-        torch.nn.Linear(60, 30),
+        torch.nn.Linear(60, 20),
         torch.nn.Tanh(),
-        torch.nn.Linear(30, 1)
+        torch.nn.Linear(20, 1)
     )
     return model
 
@@ -63,9 +63,7 @@ def load_torch_model():
 # 预测强度
 def presiction(data, scaler, model):
     try:
-        feature = [data["mix_period"],
-                   data["mix_concrete_variety"],
-                   data["mix_power_level"],
+        feature = [data["mix_power_level"],
                    data["mix_impermeability_rating"],
                    data["mix_material_requirements"],
                    data["mix_limit_expansion_rate"],

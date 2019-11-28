@@ -9,8 +9,10 @@ def filter_mix(joption):
         mix_period = [5, 6, 7, 8, 9]
     elif joption["mix_period"] == "低":
         mix_period = [12, 1, 2]
-    else:
+    elif joption["mix_period"] == "中":
         mix_period = [3, 4, 10, 11]
+    else:
+        mix_period = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
     regex1 = re.compile("^C(.+)")
     mix_power_level = float(regex1.findall(joption["mix_power_level"])[0])

@@ -24,6 +24,13 @@ def mix_ratio_optimization(joption, jprice, record, model, scaler):
     regex1 = re.compile("^C(.+)")
     user_mix_power_level = float(regex1.findall(joption["mix_power_level"])[0])  # 用户要求的强度等级
 
+    # 初始化
+    jprice["mix_special_fine_sand_dosage"] = 0
+    jprice["mix_medium_sand_consumption"] = 0
+    jprice["mix_coarse_sand_consumption"] = 0
+    jprice["mix_rocklet_consumption"] = 0
+    jprice["mix_boulder_consumption"] = 0
+
     if joption["fine_aggregate_1"] == "特细沙":
         jprice["mix_special_fine_sand_dosage"] = jprice["fine_aggregate_1"]
     elif joption["fine_aggregate_1"] == "中沙":
