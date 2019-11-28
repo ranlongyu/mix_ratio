@@ -19,21 +19,21 @@ def filter_mix(joption):
 
     special_fine_sand_y = -2
     special_fine_sand_n = 3000
-    if "特细沙" in [joption["fine_aggregate_1"], joption["fine_aggregate_2"], joption["fine_aggregate_3"]]:
+    if "特细砂" in [joption["fine_aggregate_1"], joption["fine_aggregate_2"], joption["fine_aggregate_3"]]:
         special_fine_sand_y = 10
     else:
         special_fine_sand_n = 10
 
     medium_sand_y = -2
     medium_sand_n = 3000
-    if "中沙" in [joption["fine_aggregate_1"], joption["fine_aggregate_2"], joption["fine_aggregate_3"]]:
+    if "中砂" in [joption["fine_aggregate_1"], joption["fine_aggregate_2"], joption["fine_aggregate_3"]]:
         medium_sand_y = 10
     else:
         medium_sand_n = 10
 
     coarse_sand_y = -2
     coarse_sand_n = 3000
-    if "粗沙" in [joption["fine_aggregate_1"], joption["fine_aggregate_2"], joption["fine_aggregate_3"]]:
+    if "粗砂" in [joption["fine_aggregate_1"], joption["fine_aggregate_2"], joption["fine_aggregate_3"]]:
         coarse_sand_y = 10
     else:
         coarse_sand_n = 10
@@ -63,8 +63,8 @@ def filter_mix(joption):
         Mix.fly_breed_grade == joption["fly_breed_grade"],  # 粉煤灰品种等级
         Mix.reduce_breed_grade == joption["reduce_breed_grade"],  # 外加剂品种等级
         Mix.mix_28d_strength >= mix_power_level,  # 检测强度不低于标准值
-        Mix.mix_special_fine_sand_dosage > special_fine_sand_y,  # 如果有特细沙,用量必须大于10
-        Mix.mix_special_fine_sand_dosage < special_fine_sand_n,  # 如果没有特细沙,用量必须小于10
+        Mix.mix_special_fine_sand_dosage > special_fine_sand_y,  # 如果有特细砂,用量必须大于10
+        Mix.mix_special_fine_sand_dosage < special_fine_sand_n,  # 如果没有特细砂,用量必须小于10
         Mix.mix_medium_sand_consumption > medium_sand_y,
         Mix.mix_medium_sand_consumption < medium_sand_n,
         Mix.mix_coarse_sand_consumption > coarse_sand_y,
@@ -186,9 +186,9 @@ if __name__ == '__main__':
         "cement_28d_compression": -1,
         "cement_supply_unit": "重庆小南海水泥厂",
 
-        "fine_aggregate_1": "特细沙",
-        "fine_aggregate_2": "中沙",
-        "fine_aggregate_3": "粗沙",
+        "fine_aggregate_1": "特细砂",
+        "fine_aggregate_2": "中砂",
+        "fine_aggregate_3": "粗砂",
 
         "coarse_aggregate_1": "小石",
         "coarse_aggregate_2": "大石",

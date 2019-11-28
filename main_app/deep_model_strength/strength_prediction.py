@@ -106,8 +106,8 @@ def presiction(data, scaler, model):
         data_transform(feature)
         feature = np.array([feature], dtype=float)
         feature = scaler.transform(feature)
-        val = model(torch.from_numpy(feature).float())  # 预测
-        jresult = {"state": "1", "strength": str(val.data.numpy()[0][0])}
+        val = round(model(torch.from_numpy(feature).float()).data.numpy()[0][0], 1)  # 预测
+        jresult = {"state": "1", "strength": str(val)}
     except:
         jresult = {"state": "-1", "strength": "0"}
     return jresult
