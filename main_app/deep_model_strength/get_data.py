@@ -9,7 +9,6 @@ def get_data(connect):
     cursor = db.cursor()
     sql = "select " \
           "mix_28d_strength," \
-          "mix_power_level," \
           "mix_impermeability_rating," \
           "mix_material_requirements," \
           "mix_limit_expansion_rate," \
@@ -69,57 +68,52 @@ def get_data(connect):
 
 # 把特征转换为数字，无返回值
 def data_transform(feature):
-    # 强度等级
+    # 抗渗等级
     try:
         feature[0] = int(feature[0][1:])
     except:
         feature[0] = -1
-    # 抗渗等级
-    try:
-        feature[1] = int(feature[1][1:])
-    except:
-        feature[1] = -1
     # 材料要求
     mix_material_requirements_di = {"细石": 1, "低碱水泥": 2, "GNA": 3, "ZY": 4, "UEA": 5}
     try:
-        feature[2] = mix_material_requirements_di.get(feature[2].split("\\")[0])
+        feature[1] = mix_material_requirements_di.get(feature[1].split("\\")[0])
     except:
-        feature[2] = -1
+        feature[1] = -1
     # 水泥品种等级
     cement_breed_grade_di = {"P·O42.5R": 1, "P·O42.5": 2, "P·O42.5（低碱）": 3}
     try:
-        feature[18] = cement_breed_grade_di.get(feature[18])
+        feature[17] = cement_breed_grade_di.get(feature[17])
     except:
-        feature[18] = -1
+        feature[17] = -1
     # 减水剂品种等级
     reduce_breed_grade = {"聚羧酸高性能减水剂-缓凝型": 1, "聚羧酸高性能减水剂-标准型": 2}
     try:
-        feature[20] = reduce_breed_grade.get(feature[20])
+        feature[19] = reduce_breed_grade.get(feature[19])
     except:
-        feature[20] = -1
+        feature[19] = -1
     # 粉煤灰品种类别
     fly_sample_category_di = {"F类": 1, "C类": 2}
     try:
-        feature[26] = fly_sample_category_di.get(feature[26])
+        feature[25] = fly_sample_category_di.get(feature[25])
     except:
-        feature[26] = -1
+        feature[25] = -1
     # 粉煤灰品种类别
     fly_breed_grade_di = {"Ⅰ级": 1, "Ⅱ级": 2, "Ⅲ级": 3}
     try:
-        feature[27] = fly_breed_grade_di.get(feature[27])
+        feature[26] = fly_breed_grade_di.get(feature[26])
     except:
-        feature[27] = -1
+        feature[26] = -1
     # 矿渣粉品种等级
     try:
-        feature[32] = int(feature[32])
+        feature[31] = int(feature[31])
     except:
-        feature[32] = -1
+        feature[31] = -1
     # 膨胀剂品种等级
     expansion_breed_grade_di = {"Ⅰ型硫铝酸钙类": 1, "Ⅱ型氧化钙类": 2, "Ⅱ型硫铝酸钙-氧化钙类": 3}
     try:
-        feature[37] = expansion_breed_grade_di.get(feature[37])
+        feature[36] = expansion_breed_grade_di.get(feature[36])
     except:
-        feature[37] = -1
+        feature[36] = -1
     # 规范数据
     for i in range(len(feature)):
         if feature[i] == None or feature[i] == -1:
