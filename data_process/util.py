@@ -1,10 +1,3 @@
-import sys
-import os
-
-sys.path.append(os.path.abspath('..'))
-sys.path.append(os.path.abspath('..') + "/main_app")
-
-from read_data_from_csv import read_data
 from main_app.model import Mix_ratio_table as Mix
 from main_app import db
 
@@ -82,8 +75,3 @@ def store(data):
         )
         db.session.add(new_mix)
         db.session.commit()
-
-
-if __name__ == '__main__':
-    data = read_data()
-    store(data)

@@ -5,11 +5,9 @@ import json
 from push_mix_ratio import result_package
 from initial_screen import main_initial
 from deep_model_strength.strength_prediction import presiction, load_torch_model
-from deep_model_strength.get_data import main_get_data
-import config
 
-model_strength = load_torch_model()
-scaler = main_get_data(config.CONNECT, False)
+model_strength = load_torch_model()  # 让模型一直在内存中
+model_strength.eval()
 
 
 # 设置route
@@ -24,8 +22,8 @@ def index():
 @app.route('/mixratio', methods=['POST'])
 def create_task_test():
     data = json.loads(request.get_data())
-    lrecord = main_initial(data["option"])
-    jresult = result_package(data["option"], data["price"], lrecord, scaler=scaler, model=model_strength)
+    lrecord = main_initial(data["option"])[:10]
+    jresult = result_package(data["option"], data["price"], lrecord, model=model_strength)
     return jsonify(jresult), 201
 
 
@@ -33,5 +31,5 @@ def create_task_test():
 @app.route('/mixratio/strength', methods=['POST'])
 def strength_prediction():
     data = json.loads(request.get_data())
-    jresult = presiction(data, scaler=scaler, model=model_strength)
+    jresult = presiction(data, model=model_strength)
     return jsonify(jresult), 201

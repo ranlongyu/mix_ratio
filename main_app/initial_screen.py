@@ -1,5 +1,5 @@
-from main_app.model import Mix_ratio_table as Mix
 import re
+from main_app.model import Mix_ratio_table as Mix
 from push_mix_ratio import result_package
 
 

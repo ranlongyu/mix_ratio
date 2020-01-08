@@ -1,6 +1,6 @@
 import pymysql
 import numpy as np
-from sklearn import preprocessing
+
 
 def get_data(connect):
     # 创建数据库链接，分别指定主机、用户、密码和数据库名,必须保证用户有权限链接
@@ -119,14 +119,10 @@ def data_transform(feature):
         if feature[i] == None or feature[i] == -1:
             feature[i] = 0
 
-# 特征归一化
-def get_standard_scaler(features):
-    scaler = preprocessing.StandardScaler().fit(features)
-    return scaler
 
 # 训练时获取数据与标签
-def main_get_data(connect, data_or_scaler):
-    #connect = ['0.0.0.0', 'root', '123456', 'test']
+def main_get_data(connect):
+    # connect = ['0.0.0.0', 'root', '123456', 'test']
     all_data = get_data(connect)
     features = []  # 特征
     lables = []  # 标签
@@ -134,19 +130,11 @@ def main_get_data(connect, data_or_scaler):
         features.append(all_data[i][1:])
         lables.append([all_data[i][0]])
         data_transform(features[i])
-    features = np.array(features)
-    # 数据归一化
-    scaler = get_standard_scaler(features)
-    if data_or_scaler:  # 获取数据
-        features = scaler.transform(features)
-        lables = np.array(lables)
-        return features, lables
-    else:  # 获取归一化参数
-        return scaler
+    return np.array(features), np.array(lables)
 
 
 if __name__ == '__main__':
     connect = ['0.0.0.0', 'root', '123456', 'test']
-    features, lable = main_get_data(connect, True)
+    features, lable = main_get_data(connect)
     for line in features:
         print(line)

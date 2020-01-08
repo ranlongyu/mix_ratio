@@ -2,14 +2,13 @@
 
 ### 安装部署
 1. 安装Pipfile中的环境；
-2. 配置config.py中的数据库，如果没有数据库:
-    1. 把main_app/__init__.py中`from main_app import model, routes`注释掉；
-    2. 使用main_app.create_db.py创建数据库；
-    3. 通过data_process中写入数据到数据库；
-    4. 去掉注释。
+2. 配置config.py中的数据库，如果没有数据库，使用data_process.create_db.py创建数据库；
 3. 配置gunicorn.py中的信息；
-4. 配置main_mix_ratio.py中为`app.run(debug=False)`；
+4. 配置config.py中`DEBUG=False)`；
 5. 执行`nohup gunicorn -c gunicorn.py main_mix_ratio:app &`命令。
+
+### 强度预测模型训练
+使用deep_model_strength.strenth_prediction.py中的函数训练模型。
 
 ### 文件说明
 ```
@@ -18,7 +17,7 @@
 ├── data_process  # 把原始数据处理后写入数据库
 │   ├── csv表
 │   │   ├── 粉煤灰质量检测列表.csv
-│   │   ├── 矿渣粉质量检测列表.csv
+│   │   ├── 矿渣粉质量检测列表.csvmox
 │   │   ├── 膨胀剂质量检测列表.csv
 │   │   ├── 施工配合比相关数据.csv
 │   │   ├── 石灰石粉质量检测列表.csv

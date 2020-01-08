@@ -10,10 +10,14 @@ flask = "*"
 flask-sqlalchemy = "*"
 pymysql = "*"
 numpy = "*"
-scikit-learn = "*"
 gunicorn = "*"
 torch = "*"
 torchvision = "*"
+pycryptodome = "*"
+crypto = "*"
+# 训练模型
+tensorflow = "*"
+tensorboardX = "*"
 
 [requires]
 python_version = "3.6"

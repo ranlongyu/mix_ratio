@@ -20,7 +20,7 @@ def compute_unit_price(jprice, record):
     return unit_price
 
 # 通过价格优化record记录中配合比
-def mix_ratio_optimization(joption, jprice, record, model, scaler):
+def mix_ratio_optimization(joption, jprice, record, model):
     regex1 = re.compile("^C(.+)")
     user_mix_power_level = float(regex1.findall(joption["mix_power_level"])[0])  # 用户要求的强度等级
 
@@ -91,7 +91,7 @@ def mix_ratio_optimization(joption, jprice, record, model, scaler):
         if design_max_water_binder_ratio <= max(0.36, 0.6 - (user_mix_power_level - 25) / 100):  # 水胶比合理性判断
             # 计算生成的配合比的价格
             new_unit_price = compute_unit_price(jprice, new_record)
-            new_record.mix_28d_strength = float(presiction(new_record, scaler=scaler, model=model)["strength"])
+            new_record.mix_28d_strength = float(presiction(new_record, model=model)["strength"])
             if new_record.mix_28d_strength > user_mix_power_level and new_unit_price < best_unit_price:
                 best_record = new_record
                 best_unit_price = new_unit_price
@@ -161,11 +161,11 @@ def mix_ratio_optimization(joption, jprice, record, model, scaler):
     return jdata
 
 # 推送配合比主函数
-def result_package(joption, jprice, lrecord, scaler, model):
+def result_package(joption, jprice, lrecord, model):
     jresult = {}
-    jresult["result_long"] = min(len(lrecord), 10)
+    jresult["result_long"] = len(lrecord)
     jresult["result"] = []
-    for record in lrecord[:10]:
+    for record in lrecord:
         jone = {}
         jone["mix_cement_consumption"] = round(record.mix_cement_consumption)  # 水泥用量
 
@@ -265,5 +265,5 @@ def result_package(joption, jprice, lrecord, scaler, model):
         jresult["result"].append(jone)
 
     if len(jresult["result"]) > 0:
-        jresult["result"][0] = mix_ratio_optimization(joption, jprice, lrecord[0], scaler, model)
+        jresult["result"][0] = mix_ratio_optimization(joption, jprice, lrecord[0], model)
     return jresult

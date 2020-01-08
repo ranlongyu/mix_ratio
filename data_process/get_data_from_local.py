@@ -1,5 +1,8 @@
-import csv
-import re
+import sys, os, csv, re
+from util import store
+
+sys.path.append(os.path.abspath('..'))
+sys.path.append(os.path.abspath('..') + "/main_app")
 
 waijiaji_file = "csv表/外加剂质量台账列表.csv"
 peihebi_file = "csv表/施工配合比相关数据.csv"
@@ -143,8 +146,8 @@ def read_data():
         header = next(csv_reader)  # 读取第一行
         for row in csv_reader:
             new_row = []
-            new_row.append(float(regex1.findall(row[10])[0]))  # yue
-            new_row.append(row[51])  # 混凝土品种
+            new_row.append(float(regex1.findall(row[10])[0]))  # 月份
+            new_row.append(row[51].replace("\\", ","))  # 混凝土品种
             new_row.append(row[52])  # 强度等级
             new_row.append(row[53])  # 抗渗等级
             new_row.append(row[54])  # 材料要求
@@ -214,10 +217,10 @@ def read_data():
             except:
                 new_row.append(-1)
 
-            new_row.append(2)  # 生产车间
-            new_row.append(3)  # 主供车间
-            new_row.append(9)  # 生产线
-            new_row.append(11)  # 浇注方式
+            new_row.append(row[2])  # 生产车间
+            new_row.append(row[3])  # 主供车间
+            new_row.append(row[9])  # 生产线
+            new_row.append(row[11])  # 浇注方式
             try:
                 new_row.append(float(row[17]))  # 3d强度
             except:
@@ -229,7 +232,7 @@ def read_data():
             try:
                 new_row.append(float(row[19]))  # 28d强度
             except:
-                new_row.append(-1)
+                continue  # 必须要有28d强度
             try:
                 new_row.append(float(row[20]))  # 60d强度
             except:
@@ -300,5 +303,7 @@ def read_data():
     return all_data
 
 
+
 if __name__ == '__main__':
-    d = read_data()
+    data = read_data()
+    store(data)
