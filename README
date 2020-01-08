@@ -14,27 +14,29 @@
 ```
 .
 ├── config.py  # 数据库配置信息
-├── data_process  # 把原始数据处理后写入数据库
-│   ├── csv表
+├── data_process  # 写入数据库相关操作
+│   ├── create_db.py  # 创建数据库
+│   ├── csv表  # 本地数据
 │   │   ├── 粉煤灰质量检测列表.csv
-│   │   ├── 矿渣粉质量检测列表.csvmox
+│   │   ├── 矿渣粉质量检测列表.csv
 │   │   ├── 膨胀剂质量检测列表.csv
 │   │   ├── 施工配合比相关数据.csv
 │   │   ├── 石灰石粉质量检测列表.csv
 │   │   ├── 水泥质检列表.csv
 │   │   └── 外加剂质量台账列表.csv
-│   ├── read_data_from_csv.py
-│   └── store_to_database.py
+│   ├── get_data_from_local.py  # 读取本地数据到数据库（弃用）
+│   ├── get_data_from_web.py  # 从web接口拉取数据
+│   └── util.py
 ├── gunicorn.py  # gunicorn容器配置文件
 ├── main_app
-│   ├── create_db.py  # 可以通过该文件创建数据库
 │   ├── deep_model_strength  # 混凝土强度预测模型，使用了原材料用量和质量预测
-│   │   ├── get_data.py  # 从数据库中获取数据
-│   │   └── torch_model_params.pkl
-│   ├── initial_screen.py  # 初筛
-│   ├── __init__.py
+│   │   ├── get_data_from_db.py  # 从数据库中读取数据
+│   │   ├── strength_prediction.py  # 基于深度学习的强度预测模型
+│   │   ├── strength_prediction_traditional.py  # 基于svm的强度预测模型（没用）
+│   │   └── torch_model_params.pkl  # 保存的模型参数
+│   ├── initial_screen.py  # 对混凝土配合比进行初筛
 │   ├── model.py  # 数据库模型
-│   ├── push_mix_ratio.py  # 配合比生成的主文件
+│   ├── push_mix_ratio.py # 配合比生成的主程序
 │   ├── restful  # restful测试文件
 │   │   ├── mix_ratio_request.json
 │   │   ├── mix_ratio_response.json

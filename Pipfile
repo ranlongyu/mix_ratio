@@ -15,6 +15,7 @@ torch = "*"
 torchvision = "*"
 pycryptodome = "*"
 # 训练模型
+matplotlib = "*"
 tensorflow = "*"
 tensorboardX = "*"
 
