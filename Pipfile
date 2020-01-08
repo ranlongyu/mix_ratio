@@ -14,7 +14,6 @@ gunicorn = "*"
 torch = "*"
 torchvision = "*"
 pycryptodome = "*"
-crypto = "*"
 # 训练模型
 tensorflow = "*"
 tensorboardX = "*"

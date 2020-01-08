@@ -1,4 +1,4 @@
-from get_data_from_db import main_get_data, data_transform
+from main_app.deep_model_strength.get_data_from_db import main_get_data, data_transform
 import torch
 import torch.utils.data as Data
 import numpy as np
@@ -6,7 +6,6 @@ import config
 import os, shutil
 import matplotlib.pyplot as plt
 from tensorboardX import SummaryWriter
-from sklearn import preprocessing
 
 TORCH_MODEL_WEIGHTS_FILE = os.path.dirname(__file__) + '/torch_model_params.pkl'
 
