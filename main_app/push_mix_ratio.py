@@ -149,10 +149,22 @@ def mix_ratio_optimization(joption, jprice, record, model):
     jdata["mix_cement_consumption"] = round(best_record.mix_cement_consumption)
     jdata["mix_water_consumption"] = round(best_record.mix_water_consumption)
     jdata["mix_water_reducing_agent_dosage"] = round(best_record.mix_water_reducing_agent_dosage, 2)
-    jdata["mix_fly_ash_dosage"] = round(best_record.mix_fly_ash_dosage)
-    jdata["mix_slag_powder_consumption"] = round(best_record.mix_slag_powder_consumption)
-    jdata["mix_limestone_powder_consumption"] = round(best_record.mix_limestone_powder_consumption)
-    jdata["mix_expansion_agent_dosage"] = round(best_record.mix_expansion_agent_dosage)
+    if joption["fly_sample_category"] != "":
+        jdata["mix_fly_ash_dosage"] = round(best_record.mix_fly_ash_dosage)
+    else:
+        jdata["mix_fly_ash_dosage"] = 0
+    if joption["slag_breed_grade"] != "":
+        jdata["mix_slag_powder_consumption"] = round(best_record.mix_slag_powder_consumption)
+    else:
+        jdata["mix_slag_powder_consumption"] = 0
+    if joption["limestone_fineness"] != -1:
+        jdata["mix_limestone_powder_consumption"] = round(best_record.mix_limestone_powder_consumption)
+    else:
+        jdata["mix_limestone_powder_consumption"] = 0
+    if joption["expansion_breed_grade"] != "":
+        jdata["mix_expansion_agent_dosage"] = round(best_record.mix_expansion_agent_dosage)
+    else:
+        jdata["mix_expansion_agent_dosage"] = 0
     jdata["mix_other_materials"] = 0
     jdata["mix_apparent_density"] = round(
         best_record.mix_small_stone_dosage + best_record.mix_big_stone_dosage + best_record.mix_limestone_powder_consumption + best_record.mix_water_consumption + best_record.mix_special_fine_sand_dosage + best_record.mix_medium_sand_consumption + best_record.mix_coarse_sand_consumption + best_record.mix_fly_ash_dosage + best_record.mix_cement_consumption + best_record.mix_water_reducing_agent_dosage + best_record.mix_expansion_agent_dosage + best_record.mix_slag_powder_consumption)

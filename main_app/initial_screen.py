@@ -58,9 +58,9 @@ def filter_mix(joption):
         Mix.mix_power_level == joption["mix_power_level"],  # 强度等级
         Mix.mix_impermeability_rating == joption["mix_impermeability_rating"],  # 抗渗等级
         Mix.cement_breed_grade == joption["cement_breed_grade"],  # 水泥品种等级
-        Mix.slag_breed_grade == joption["slag_breed_grade"],  # 矿渣粉品种等级
-        Mix.fly_sample_category == joption["fly_sample_category"],  # 粉煤灰类别
-        Mix.fly_breed_grade == joption["fly_breed_grade"],  # 粉煤灰品种等级
+        # Mix.slag_breed_grade == joption["slag_breed_grade"],  # 矿渣粉品种等级
+        # Mix.fly_sample_category == joption["fly_sample_category"],  # 粉煤灰类别
+        # Mix.fly_breed_grade == joption["fly_breed_grade"],  # 粉煤灰品种等级
         Mix.reduce_breed_grade == joption["reduce_breed_grade"],  # 外加剂品种等级
         Mix.mix_28d_strength >= mix_power_level,  # 检测强度不低于标准值
         Mix.mix_special_fine_sand_dosage > special_fine_sand_y,  # 如果有特细砂,用量必须大于10
@@ -75,6 +75,37 @@ def filter_mix(joption):
         Mix.mix_big_stone_dosage < big_stone_n,
     ).all()
 
+    new_lrecord_ = []  # 完全匹配
+    new_lrecord = []  # 当用户选时才匹配，当没有时不管
+    for record in lrecord:
+        if record.slag_breed_grade == joption["slag_breed_grade"]:
+            new_lrecord_.append(record)
+        if joption["slag_breed_grade"] != "":  # 用户选了矿渣粉品种等级
+            if record.slag_breed_grade != joption["slag_breed_grade"]:
+                continue
+        new_lrecord.append(record)
+    if new_lrecord_ != []:  # 如果完全匹配的有记录
+        lrecord = new_lrecord_
+    else:
+        lrecord = new_lrecord
+
+    new_lrecord_ = []  # 完全匹配
+    new_lrecord = []  # 当用户选时才匹配，当没有时不管
+    for record in lrecord:
+        if record.fly_sample_category == joption["fly_sample_category"] and record.fly_breed_grade == joption[
+            "fly_breed_grade"]:
+            new_lrecord_.append(record)
+        if joption["fly_sample_category"] != "":  # 粉煤灰类别
+            if record.fly_sample_category != joption["fly_sample_category"]:
+                continue
+        if joption["fly_breed_grade"] != "":  # 粉煤灰品种等级
+            if record.fly_breed_grade != joption["fly_breed_grade"]:
+                continue
+        new_lrecord.append(record)
+    if new_lrecord_ != []:  # 如果完全匹配的有记录
+        lrecord = new_lrecord_
+    else:
+        lrecord = new_lrecord
     return lrecord  # 一个记录列表，可能为空
 
 
@@ -237,5 +268,5 @@ if __name__ == '__main__':
         "other_materials": 0
     }
     lrecord = main_initial(joption)
-    js = result_package(joption,jprice,lrecord)
+    js = result_package(joption, jprice, lrecord)
     print(js)
