@@ -67,6 +67,19 @@ def mix_ratio_optimization(joption, jprice, record, model):
     elif joption["coarse_aggregate_3"] == "大石":
         jprice["mix_boulder_consumption"] = jprice["coarse_aggregate_3"]
 
+    if joption["fly_sample_category"] == "":
+        record.mix_fly_ash_dosage = 0
+    if joption["slag_breed_grade"] == "":
+        record.mix_slag_powder_consumption = 0
+    if joption["limestone_fineness"] == -1:
+        record.mix_limestone_powder_consumption = 0
+    if joption["expansion_breed_grade"] == "":
+        record.mix_expansion_agent_dosage = 0
+
+    # 水下混凝土特殊条件判断
+    if joption["mix_concrete_variety"]=="水下混凝土":
+        record.mix_cement_consumption = max(300, record.mix_cement_consumption, 365-(record.mix_limestone_powder_consumption+record.mix_fly_ash_dosage+record.mix_slag_powder_consumption+record.mix_expansion_agent_dosage))
+
     # 查询得到的记录的单位价格
     unit_price = compute_unit_price(jprice, record)
     # 初始化best_record，记录最优值
@@ -78,13 +91,53 @@ def mix_ratio_optimization(joption, jprice, record, model):
         # 初始化new_record，每次循环都改变该值
         new_record = copy.deepcopy(record)
         # 取随机值
-        new_record.mix_limestone_powder_consumption += 10 * (-1 * np.random.rand())
+        if joption["limestone_fineness"] != -1:
+            if record.mix_limestone_powder_consumption < 0.1:  # 当数据库中石灰石粉用量为0时，设为均值
+                record.mix_limestone_powder_consumption = 31.5
+            new_record.mix_limestone_powder_consumption += (0.6*np.random.rand()-0.3)*record.mix_limestone_powder_consumption
         if joption["reduce_breed_grade"] != "":
-            new_record.mix_water_reducing_agent_dosage += 3 * (-1 + 2 * np.random.rand())
+            if record.mix_water_reducing_agent_dosage < 0.1:
+                record.mix_water_reducing_agent_dosage = 7
+            new_record.mix_water_reducing_agent_dosage += (0.6*np.random.rand()-0.3)*record.mix_water_reducing_agent_dosage
         if joption["fly_sample_category"] != "":
-            new_record.mix_fly_ash_dosage += 10 * (-1 * np.random.rand())
-        new_record.mix_cement_consumption += 10 * (-1 + 2 * np.random.rand())
-        new_record.mix_water_consumption += 20 * (2 * np.random.rand() - 1)
+            if record.mix_fly_ash_dosage < 0.1:
+                record.mix_fly_ash_dosage = 49
+            new_record.mix_fly_ash_dosage += (0.6 * np.random.rand() - 0.3) * record.mix_fly_ash_dosage
+
+        if record.mix_cement_consumption < 0.1:
+            record.mix_cement_consumption = 258.6
+        new_record.mix_cement_consumption += (0.6 * np.random.rand() - 0.3) * record.mix_cement_consumption
+
+        if record.mix_water_consumption < 0.1:
+            record.mix_water_consumption = 158.7
+        new_record.mix_water_consumption += (0.6 * np.random.rand() - 0.3) * record.mix_water_consumption
+
+        if "特细砂" in [joption["fine_aggregate_1"], joption["fine_aggregate_2"], joption["fine_aggregate_3"]]:
+            if record.mix_special_fine_sand_dosage < 0.1:
+                record.mix_special_fine_sand_dosage = 159
+            new_record.mix_special_fine_sand_dosage += (1 * np.random.rand() - 0.5) * record.mix_special_fine_sand_dosage
+        if "中砂" in [joption["fine_aggregate_1"], joption["fine_aggregate_2"], joption["fine_aggregate_3"]]:
+            if record.mix_medium_sand_consumption < 0.1:
+                record.mix_medium_sand_consumption = 281
+            new_record.mix_medium_sand_consumption += (1 * np.random.rand() - 0.5) * record.mix_medium_sand_consumption
+        if "粗砂" in [joption["fine_aggregate_1"], joption["fine_aggregate_2"], joption["fine_aggregate_3"]]:
+            if record.mix_coarse_sand_consumption < 0.1:
+                record.mix_coarse_sand_consumption = 324.7
+            new_record.mix_coarse_sand_consumption += (1 * np.random.rand() - 0.5) * record.mix_coarse_sand_consumption
+
+        if "小石" in [joption["coarse_aggregate_1"], joption["coarse_aggregate_2"], joption["coarse_aggregate_3"]]:
+            if record.mix_small_stone_dosage < 0.1:
+                record.mix_small_stone_dosage = 404.3
+            new_record.mix_small_stone_dosage += (1 * np.random.rand() - 0.5) * record.mix_small_stone_dosage
+        if "大石" in [joption["coarse_aggregate_1"], joption["coarse_aggregate_2"], joption["coarse_aggregate_3"]]:
+            if record.mix_big_stone_dosage < 0.1:
+                record.mix_big_stone_dosage = 618
+            new_record.mix_big_stone_dosage += (1 * np.random.rand() - 0.5) * record.mix_big_stone_dosage
+
+        # 水下混凝土特殊条件判断
+        if joption["mix_concrete_variety"]=="水下混凝土":
+            new_record.mix_cement_consumption = max(300, new_record.mix_cement_consumption, 365-(new_record.mix_limestone_powder_consumption+new_record.mix_fly_ash_dosage+new_record.mix_slag_powder_consumption+new_record.mix_expansion_agent_dosage))
+
         # 计算水胶比，看是否满足要求
         design_max_water_binder_ratio = new_record.mix_water_consumption / (
                 new_record.mix_limestone_powder_consumption + new_record.mix_fly_ash_dosage + new_record.mix_cement_consumption + new_record.mix_expansion_agent_dosage + new_record.mix_slag_powder_consumption)
@@ -96,6 +149,7 @@ def mix_ratio_optimization(joption, jprice, record, model):
                 best_record = new_record
                 best_unit_price = new_unit_price
 
+    # 包装数据
     jdata = {}
 
     if joption["fine_aggregate_1"] == "特细砂":
@@ -149,6 +203,7 @@ def mix_ratio_optimization(joption, jprice, record, model):
     jdata["mix_cement_consumption"] = round(best_record.mix_cement_consumption)
     jdata["mix_water_consumption"] = round(best_record.mix_water_consumption)
     jdata["mix_water_reducing_agent_dosage"] = round(best_record.mix_water_reducing_agent_dosage, 2)
+
     if joption["fly_sample_category"] != "":
         jdata["mix_fly_ash_dosage"] = round(best_record.mix_fly_ash_dosage)
     else:
@@ -165,6 +220,7 @@ def mix_ratio_optimization(joption, jprice, record, model):
         jdata["mix_expansion_agent_dosage"] = round(best_record.mix_expansion_agent_dosage)
     else:
         jdata["mix_expansion_agent_dosage"] = 0
+
     jdata["mix_other_materials"] = 0
     jdata["mix_apparent_density"] = round(
         best_record.mix_small_stone_dosage + best_record.mix_big_stone_dosage + best_record.mix_limestone_powder_consumption + best_record.mix_water_consumption + best_record.mix_special_fine_sand_dosage + best_record.mix_medium_sand_consumption + best_record.mix_coarse_sand_consumption + best_record.mix_fly_ash_dosage + best_record.mix_cement_consumption + best_record.mix_water_reducing_agent_dosage + best_record.mix_expansion_agent_dosage + best_record.mix_slag_powder_consumption)

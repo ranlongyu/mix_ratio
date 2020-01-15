@@ -50,7 +50,7 @@ def clean_data(datadi):
             if '防水' in data['mix_concrete_variety']:
                 mix_concrete_variety.append('防水混凝土')
             if '补偿' in data['mix_concrete_variety']:
-                mix_concrete_variety.append('补偿混凝土')
+                mix_concrete_variety.append('补偿收缩混凝土')
             if '水下' in data['mix_concrete_variety']:
                 mix_concrete_variety.append('水下混凝土')
             if '大体积' in data['mix_concrete_variety']:
@@ -68,7 +68,7 @@ def clean_data(datadi):
             if '轻骨料' in data['mix_concrete_variety']:
                 mix_concrete_variety.append('轻骨料混凝土')
             if '重混' in data['mix_concrete_variety']:
-                mix_concrete_variety.append('重混混凝土')
+                mix_concrete_variety.append('重混凝土')
             if mix_concrete_variety != []:
                 new_data['mix_concrete_variety'] = ",".join(mix_concrete_variety)
             else:
@@ -134,6 +134,8 @@ def clean_data(datadi):
             continue
         if new_data["mix_slag_powder_consumption"]==0 and new_data["slag_breed_grade"]!='':
             continue
+        if new_data["mix_limestone_powder_consumption"]==0 and new_data["limestone_fineness"]!=-1:
+            continue
         new_datali.append(new_data)
     return new_datali
 
@@ -144,14 +146,14 @@ def print_data(datali):
 
 
 if __name__ == '__main__':
-    start_day = date(2018, 12, 2)
+    start_day = date(2018, 1, 1)
     end_day = date(2019, 12, 31)
     while start_day <= end_day:
         start_time = start_day.strftime('%Y-%m-%d')
         datadi = get_data_web(start_time, start_time)
         datali = clean_data(datadi)
         store(datali)
-        # print_data(datali)
+        #print_data(datali)
         print(start_time + ": " + str(len(datali)))
         start_day = start_day + timedelta(days=1)
     print("存储完成！")

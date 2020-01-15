@@ -106,6 +106,7 @@ def filter_mix(joption):
         lrecord = new_lrecord_
     else:
         lrecord = new_lrecord
+
     return lrecord  # 一个记录列表，可能为空
 
 

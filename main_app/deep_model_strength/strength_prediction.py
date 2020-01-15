@@ -105,7 +105,8 @@ def load_torch_model():
 # 预测强度
 def presiction(data, model):
     try:
-        feature = [data["mix_impermeability_rating"],
+        if type(data).__name__=='dict':
+            feature = [data["mix_impermeability_rating"],
                    data["mix_material_requirements"],
                    data["mix_limit_expansion_rate"],
                    data["mix_slump"],
@@ -144,6 +145,46 @@ def presiction(data, model):
                    data["expansion_breed_grade"],
                    data["expansion_28d_compressive_strength"],
                    data["expansion_limit_expansion_rate"]]
+        else:
+            feature = [data.mix_impermeability_rating,
+                       data.mix_material_requirements,
+                       data.mix_limit_expansion_rate,
+                       data.mix_slump,
+                       data.mix_expansion,
+                       data.mix_cement_consumption,
+                       data.mix_special_fine_sand_dosage,
+                       data.mix_medium_sand_consumption,
+                       data.mix_coarse_sand_consumption,
+                       data.mix_small_stone_dosage,
+                       data.mix_big_stone_dosage,
+                       data.mix_water_reducing_agent_dosage,
+                       data.mix_fly_ash_dosage,
+                       data.mix_slag_powder_consumption,
+                       data.mix_limestone_powder_consumption,
+                       data.mix_expansion_agent_dosage,
+                       data.mix_water_consumption,
+                       data.cement_breed_grade,
+                       data.cement_28d_compression,
+                       data.reduce_breed_grade,
+                       data.reduce_recommended_dosage,
+                       data.reduce_water_reduction_rate,
+                       data.reduce_gas_content,
+                       data.reduce_28d_compressive_strength_ratio,
+                       data.reduce_bleeding_rate_ratio,
+                       data.fly_sample_category,
+                       data.fly_breed_grade,
+                       data.fly_fineness,
+                       data.fly_water_demand_ratio,
+                       data.fly_loss_on_ignition,
+                       data.fly_activity_index,
+                       data.slag_breed_grade,
+                       data.slag_28d_activity_index,
+                       data.limestone_fineness,
+                       data.limestone_methylene_blue_value,
+                       data.limestone_28d_activity_index,
+                       data.expansion_breed_grade,
+                       data.expansion_28d_compressive_strength,
+                       data.expansion_limit_expansion_rate]
         data_transform(feature)
         feature = np.array([feature], dtype=float)
         val = round(model(torch.from_numpy(feature).float()).data.numpy()[0][0], 1)  # 预测
