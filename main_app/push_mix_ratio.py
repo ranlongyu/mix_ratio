@@ -94,45 +94,45 @@ def mix_ratio_optimization(joption, jprice, record, model):
         if joption["limestone_fineness"] != -1:
             if record.mix_limestone_powder_consumption < 0.1:  # 当数据库中石灰石粉用量为0时，设为均值
                 record.mix_limestone_powder_consumption = 31.5
-            new_record.mix_limestone_powder_consumption += (0.6*np.random.rand()-0.3)*record.mix_limestone_powder_consumption
+            new_record.mix_limestone_powder_consumption += (0.4*np.random.rand()-0.2)*record.mix_limestone_powder_consumption
         if joption["reduce_breed_grade"] != "":
             if record.mix_water_reducing_agent_dosage < 0.1:
                 record.mix_water_reducing_agent_dosage = 7
-            new_record.mix_water_reducing_agent_dosage += (0.6*np.random.rand()-0.3)*record.mix_water_reducing_agent_dosage
+            new_record.mix_water_reducing_agent_dosage += (0.4*np.random.rand()-0.2)*record.mix_water_reducing_agent_dosage
         if joption["fly_sample_category"] != "":
             if record.mix_fly_ash_dosage < 0.1:
                 record.mix_fly_ash_dosage = 49
-            new_record.mix_fly_ash_dosage += (0.6 * np.random.rand() - 0.3) * record.mix_fly_ash_dosage
+            new_record.mix_fly_ash_dosage += (0.4 * np.random.rand() - 0.2) * record.mix_fly_ash_dosage
 
         if record.mix_cement_consumption < 0.1:
             record.mix_cement_consumption = 258.6
-        new_record.mix_cement_consumption += (0.6 * np.random.rand() - 0.3) * record.mix_cement_consumption
+        new_record.mix_cement_consumption += (0.4 * np.random.rand() - 0.2) * record.mix_cement_consumption
 
         if record.mix_water_consumption < 0.1:
             record.mix_water_consumption = 158.7
-        new_record.mix_water_consumption += (0.6 * np.random.rand() - 0.3) * record.mix_water_consumption
+        new_record.mix_water_consumption += (0.4 * np.random.rand() - 0.2) * record.mix_water_consumption
 
         if "特细砂" in [joption["fine_aggregate_1"], joption["fine_aggregate_2"], joption["fine_aggregate_3"]]:
             if record.mix_special_fine_sand_dosage < 0.1:
                 record.mix_special_fine_sand_dosage = 159
-            new_record.mix_special_fine_sand_dosage += (1 * np.random.rand() - 0.5) * record.mix_special_fine_sand_dosage
+            new_record.mix_special_fine_sand_dosage += (0.2 * np.random.rand() - 0.1) * record.mix_special_fine_sand_dosage
         if "中砂" in [joption["fine_aggregate_1"], joption["fine_aggregate_2"], joption["fine_aggregate_3"]]:
             if record.mix_medium_sand_consumption < 0.1:
                 record.mix_medium_sand_consumption = 281
-            new_record.mix_medium_sand_consumption += (1 * np.random.rand() - 0.5) * record.mix_medium_sand_consumption
+            new_record.mix_medium_sand_consumption += (0.2 * np.random.rand() - 0.1) * record.mix_medium_sand_consumption
         if "粗砂" in [joption["fine_aggregate_1"], joption["fine_aggregate_2"], joption["fine_aggregate_3"]]:
             if record.mix_coarse_sand_consumption < 0.1:
                 record.mix_coarse_sand_consumption = 324.7
-            new_record.mix_coarse_sand_consumption += (1 * np.random.rand() - 0.5) * record.mix_coarse_sand_consumption
+            new_record.mix_coarse_sand_consumption += (0.2 * np.random.rand() - 0.1) * record.mix_coarse_sand_consumption
 
         if "小石" in [joption["coarse_aggregate_1"], joption["coarse_aggregate_2"], joption["coarse_aggregate_3"]]:
             if record.mix_small_stone_dosage < 0.1:
                 record.mix_small_stone_dosage = 404.3
-            new_record.mix_small_stone_dosage += (1 * np.random.rand() - 0.5) * record.mix_small_stone_dosage
+            new_record.mix_small_stone_dosage += (0.2 * np.random.rand() - 0.1) * record.mix_small_stone_dosage
         if "大石" in [joption["coarse_aggregate_1"], joption["coarse_aggregate_2"], joption["coarse_aggregate_3"]]:
             if record.mix_big_stone_dosage < 0.1:
                 record.mix_big_stone_dosage = 618
-            new_record.mix_big_stone_dosage += (1 * np.random.rand() - 0.5) * record.mix_big_stone_dosage
+            new_record.mix_big_stone_dosage += (0.2 * np.random.rand() - 0.1) * record.mix_big_stone_dosage
 
         # 水下混凝土特殊条件判断
         if joption["mix_concrete_variety"]=="水下混凝土":
@@ -153,50 +153,50 @@ def mix_ratio_optimization(joption, jprice, record, model):
     jdata = {}
 
     if joption["fine_aggregate_1"] == "特细砂":
-        jdata["fine_aggregate_1"] = round(record.mix_special_fine_sand_dosage)
+        jdata["fine_aggregate_1"] = round(best_record.mix_special_fine_sand_dosage)
     elif joption["fine_aggregate_1"] == "中砂":
-        jdata["fine_aggregate_1"] = round(record.mix_medium_sand_consumption)
+        jdata["fine_aggregate_1"] = round(best_record.mix_medium_sand_consumption)
     elif joption["fine_aggregate_1"] == "粗砂":
-        jdata["fine_aggregate_1"] = round(record.mix_coarse_sand_consumption)
+        jdata["fine_aggregate_1"] = round(best_record.mix_coarse_sand_consumption)
     else:
         jdata["fine_aggregate_1"] = 0
 
     if joption["fine_aggregate_2"] == "特细砂":
-        jdata["fine_aggregate_2"] = round(record.mix_special_fine_sand_dosage)
+        jdata["fine_aggregate_2"] = round(best_record.mix_special_fine_sand_dosage)
     elif joption["fine_aggregate_2"] == "中砂":
-        jdata["fine_aggregate_2"] = round(record.mix_medium_sand_consumption)
+        jdata["fine_aggregate_2"] = round(best_record.mix_medium_sand_consumption)
     elif joption["fine_aggregate_2"] == "粗砂":
-        jdata["fine_aggregate_2"] = round(record.mix_coarse_sand_consumption)
+        jdata["fine_aggregate_2"] = round(best_record.mix_coarse_sand_consumption)
     else:
         jdata["fine_aggregate_2"] = 0
 
     if joption["fine_aggregate_3"] == "特细砂":
-        jdata["fine_aggregate_3"] = round(record.mix_special_fine_sand_dosage)
+        jdata["fine_aggregate_3"] = round(best_record.mix_special_fine_sand_dosage)
     elif joption["fine_aggregate_3"] == "中砂":
-        jdata["fine_aggregate_3"] = round(record.mix_medium_sand_consumption)
+        jdata["fine_aggregate_3"] = round(best_record.mix_medium_sand_consumption)
     elif joption["fine_aggregate_3"] == "粗砂":
-        jdata["fine_aggregate_3"] = round(record.mix_coarse_sand_consumption)
+        jdata["fine_aggregate_3"] = round(best_record.mix_coarse_sand_consumption)
     else:
         jdata["fine_aggregate_3"] = 0
 
     if joption["coarse_aggregate_1"] == "小石":
-        jdata["coarse_aggregate_1"] = round(record.mix_small_stone_dosage)
+        jdata["coarse_aggregate_1"] = round(best_record.mix_small_stone_dosage)
     elif joption["coarse_aggregate_1"] == "大石":
-        jdata["coarse_aggregate_1"] = round(record.mix_big_stone_dosage)
+        jdata["coarse_aggregate_1"] = round(best_record.mix_big_stone_dosage)
     else:
         jdata["coarse_aggregate_1"] = 0
 
     if joption["coarse_aggregate_2"] == "小石":
-        jdata["coarse_aggregate_2"] = round(record.mix_small_stone_dosage)
+        jdata["coarse_aggregate_2"] = round(best_record.mix_small_stone_dosage)
     elif joption["coarse_aggregate_2"] == "大石":
-        jdata["coarse_aggregate_2"] = round(record.mix_big_stone_dosage)
+        jdata["coarse_aggregate_2"] = round(best_record.mix_big_stone_dosage)
     else:
         jdata["coarse_aggregate_2"] = 0
 
     if joption["coarse_aggregate_3"] == "小石":
-        jdata["coarse_aggregate_3"] = round(record.mix_small_stone_dosage)
+        jdata["coarse_aggregate_3"] = round(best_record.mix_small_stone_dosage)
     elif joption["coarse_aggregate_3"] == "大石":
-        jdata["coarse_aggregate_3"] = round(record.mix_big_stone_dosage)
+        jdata["coarse_aggregate_3"] = round(best_record.mix_big_stone_dosage)
     else:
         jdata["coarse_aggregate_3"] = 0
 
