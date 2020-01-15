@@ -141,7 +141,8 @@ def mix_ratio_optimization(joption, jprice, record, model):
         # 计算水胶比，看是否满足要求
         design_max_water_binder_ratio = new_record.mix_water_consumption / (
                 new_record.mix_limestone_powder_consumption + new_record.mix_fly_ash_dosage + new_record.mix_cement_consumption + new_record.mix_expansion_agent_dosage + new_record.mix_slag_powder_consumption)
-        if design_max_water_binder_ratio <= max(0.36, 0.6 - (user_mix_power_level - 25) / 100):  # 水胶比合理性判断
+        new_record_mix_power_level = float(regex1.findall(new_record.mix_power_level)[0])  # 记录要求的强度等级
+        if design_max_water_binder_ratio <= max(0.36, 0.6 - (new_record_mix_power_level - 25) / 100):  # 水胶比合理性判断
             # 计算生成的配合比的价格
             new_unit_price = compute_unit_price(jprice, new_record)
             new_record.mix_28d_strength = float(presiction(new_record, model=model)["strength"])
