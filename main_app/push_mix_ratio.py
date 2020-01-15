@@ -98,7 +98,7 @@ def mix_ratio_optimization(joption, jprice, record, model):
         if joption["reduce_breed_grade"] != "":
             if record.mix_water_reducing_agent_dosage < 0.1:
                 record.mix_water_reducing_agent_dosage = 7
-            new_record.mix_water_reducing_agent_dosage += (0.4*np.random.rand()-0.2)*record.mix_water_reducing_agent_dosage
+            new_record.mix_water_reducing_agent_dosage += (0.2*np.random.rand()-0.15)*record.mix_water_reducing_agent_dosage
         if joption["fly_sample_category"] != "":
             if record.mix_fly_ash_dosage < 0.1:
                 record.mix_fly_ash_dosage = 49
