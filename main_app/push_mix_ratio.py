@@ -222,8 +222,14 @@ def mix_ratio_optimization(joption, jprice, record, model):
         jdata["mix_expansion_agent_dosage"] = 0
 
     jdata["mix_other_materials"] = 0
-    jdata["mix_apparent_density"] = round(
-        best_record.mix_small_stone_dosage + best_record.mix_big_stone_dosage + best_record.mix_limestone_powder_consumption + best_record.mix_water_consumption + best_record.mix_special_fine_sand_dosage + best_record.mix_medium_sand_consumption + best_record.mix_coarse_sand_consumption + best_record.mix_fly_ash_dosage + best_record.mix_cement_consumption + best_record.mix_water_reducing_agent_dosage + best_record.mix_expansion_agent_dosage + best_record.mix_slag_powder_consumption)
+    jdata["mix_apparent_density"] = round(jdata["mix_cement_consumption"] + jdata["fine_aggregate_1"] + jdata[
+        "fine_aggregate_2"] + jdata["fine_aggregate_3"] + jdata["coarse_aggregate_1"] + jdata["coarse_aggregate_2"] + \
+                                         jdata["coarse_aggregate_3"] + jdata["mix_water_consumption"] + jdata[
+                                             "mix_water_reducing_agent_dosage"] + jdata["mix_fly_ash_dosage"] + jdata[
+                                             "mix_slag_powder_consumption"] + jdata["mix_limestone_powder_consumption"] + \
+                                         jdata["mix_expansion_agent_dosage"] + jdata["mix_other_materials"])
+    #jdata["mix_apparent_density"] = round(
+    #    best_record.mix_small_stone_dosage + best_record.mix_big_stone_dosage + best_record.mix_limestone_powder_consumption + best_record.mix_water_consumption + best_record.mix_special_fine_sand_dosage + best_record.mix_medium_sand_consumption + best_record.mix_coarse_sand_consumption + best_record.mix_fly_ash_dosage + best_record.mix_cement_consumption + best_record.mix_water_reducing_agent_dosage + best_record.mix_expansion_agent_dosage + best_record.mix_slag_powder_consumption)
     jdata["unit_price"] = round(best_unit_price / 1000, 2)
     jdata["mix_28d_strength"] = round(best_record.mix_28d_strength)
     return jdata
