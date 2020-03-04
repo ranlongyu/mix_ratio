@@ -80,6 +80,8 @@ def mix_ratio_optimization(joption, jprice, record, model):
     if joption["mix_concrete_variety"]=="水下混凝土":
         record.mix_cement_consumption = max(300, record.mix_cement_consumption, 365-(record.mix_limestone_powder_consumption+record.mix_fly_ash_dosage+record.mix_slag_powder_consumption+record.mix_expansion_agent_dosage))
 
+    np.random.seed(50)
+
     # 查询得到的记录的单位价格
     unit_price = compute_unit_price(jprice, record)
     # 初始化best_record，记录最优值
