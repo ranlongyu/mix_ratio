@@ -342,5 +342,5 @@ def result_package(joption, jprice, lrecord, model):
         jresult["result"].append(jone)
 
     if len(jresult["result"]) > 0:
-        jresult["result"][0] = mix_ratio_optimization(joption, jprice, lrecord[0], model)
+        jresult["result"].insert(0, mix_ratio_optimization(joption, jprice, lrecord[0], model))  # 优化后的数据插入到最前面
     return jresult

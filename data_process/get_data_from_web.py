@@ -146,14 +146,14 @@ def print_data(datali):
 
 
 if __name__ == '__main__':
-    start_day = date(2018, 1, 1)
-    end_day = date(2019, 12, 31)
+    start_day = date(2019, 1, 1)
+    end_day = date(2019, 1, 31)
     while start_day <= end_day:
         start_time = start_day.strftime('%Y-%m-%d')
         datadi = get_data_web(start_time, start_time)
-        datali = clean_data(datadi)
+        datali = clean_data(datadi)  # 清洗
         store(datali)
-        #print_data(datali)
+        # print_data(datali)
         print(start_time + ": " + str(len(datali)))
         start_day = start_day + timedelta(days=1)
     print("存储完成！")
