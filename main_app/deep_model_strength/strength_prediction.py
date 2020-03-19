@@ -13,14 +13,21 @@ TORCH_MODEL_WEIGHTS_FILE = os.path.dirname(__file__) + '/torch_model_params.pkl'
 # 创建模型
 def creat_torch_model():
     model = torch.nn.Sequential(
-        torch.nn.Linear(39, 60),
-        #torch.nn.Dropout(0.1),
+        torch.nn.Linear(39, 80),
+        torch.nn.Dropout(0.1),
         torch.nn.LeakyReLU(),
-        torch.nn.BatchNorm1d(60),
-        torch.nn.Linear(60, 20),
-        #torch.nn.Dropout(0.1),
+        torch.nn.BatchNorm1d(80),
+
+        torch.nn.Linear(80, 50),
+        torch.nn.Dropout(0.1),
+        torch.nn.LeakyReLU(),
+        torch.nn.BatchNorm1d(50),
+
+        torch.nn.Linear(50, 20),
+        torch.nn.Dropout(0.1),
         torch.nn.LeakyReLU(),
         torch.nn.BatchNorm1d(20),
+
         torch.nn.Linear(20, 1)
     )
     return model
@@ -58,7 +65,7 @@ def train_torch_model():
     writer = SummaryWriter("logs/")
     # 训练
     step = 0
-    for epoch in range(5):
+    for epoch in range(500):
         for batch_x, batch_y in loader:  # 每一步 loader 释放一小批数据用来学习
             step += 1
             model.train()
@@ -68,7 +75,7 @@ def train_torch_model():
             loss.backward()  # 误差反向传播, 计算参数更新值
             optimizer.step()  # 将参数更新值施加到 net 的 parameters 上
             # 打出来一些数据
-            if step % 100 == 0:
+            if step % 400 == 0:
                 # 训练集
                 writer.add_scalar('LossTrain', loss.detach().numpy(), step)
                 print('Epoch: ', epoch, '| Step: ', step, '| Loss_train: ', loss.data.numpy())
