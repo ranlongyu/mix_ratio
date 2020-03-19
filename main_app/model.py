@@ -3,6 +3,10 @@ from main_app import db  # db是在main_app/__init__.py生成的关联后的SQLA
 class Mix_ratio_table(db.Model):
     __tablename__ = '混凝土配合比'
     id = db.Column(db.BigInteger, primary_key=True)
+
+    mix_invo_time = db.Column(db.String(128), comment='小票时间')
+    mix_invo_id = db.Column(db.String(128), comment='Invo_ID')
+
     mix_period = db.Column(db.Float(), comment='小票时间月份')
     mix_concrete_variety = db.Column(db.String(128), comment='混凝土品种')
     mix_power_level = db.Column(db.String(128), comment='强度等级')
