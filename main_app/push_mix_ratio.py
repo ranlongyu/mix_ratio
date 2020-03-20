@@ -297,7 +297,7 @@ def result_package(joption, jprice, lrecord, model):
         jone["mix_water_consumption"] = round(record.mix_water_consumption) # 水用量
         jone["mix_water_reducing_agent_dosage"] = round(record.mix_water_reducing_agent_dosage, 2)  # 减水剂用量
 
-        if joption["fly_sample_category"] != "":
+        if joption["fly_sample_category"] != "" or joption["fly_fineness"] != "":
             jone["mix_fly_ash_dosage"] = round(record.mix_fly_ash_dosage)  # 粉煤灰用量
         else:
             jone["mix_fly_ash_dosage"] = 0
@@ -317,6 +317,97 @@ def result_package(joption, jprice, lrecord, model):
         else:
             jone["mix_expansion_agent_dosage"] = 0
 
+        jone["mix_other_materials"] = 0
+
+        '''28d抗压强度，表观密度，价格'''
+        jone["mix_28d_strength"] = round(record.mix_28d_strength)
+        jone["mix_apparent_density"] = round(jone["mix_cement_consumption"] + jone["fine_aggregate_1"] + jone[
+            "fine_aggregate_2"] + jone["fine_aggregate_3"] + jone["coarse_aggregate_1"] + jone["coarse_aggregate_2"] + \
+                                       jone["coarse_aggregate_3"] + jone["mix_water_consumption"] + jone[
+                                           "mix_water_reducing_agent_dosage"] + jone["mix_fly_ash_dosage"] + jone[
+                                           "mix_slag_powder_consumption"] + jone["mix_limestone_powder_consumption"] + \
+                                       jone["mix_expansion_agent_dosage"] + jone["mix_other_materials"])
+        jone["unit_price"] = jone["mix_cement_consumption"] * jprice["cement"] + jone["fine_aggregate_1"] * jprice[
+            "fine_aggregate_1"] + jone["fine_aggregate_2"] * jprice["fine_aggregate_2"] + jone["fine_aggregate_3"] * \
+                             jprice["fine_aggregate_3"] + jone["coarse_aggregate_1"] * jprice["coarse_aggregate_1"] + \
+                             jone["coarse_aggregate_2"] * jprice["coarse_aggregate_2"] + jone["coarse_aggregate_3"] * \
+                             jprice["coarse_aggregate_3"] + jone["mix_water_consumption"] * jprice["water"] + jone[
+                                 "mix_water_reducing_agent_dosage"] * jprice["water_reduce_agent"] + jone[
+                                 "mix_fly_ash_dosage"] * jprice["fly_ash"] + jone["mix_slag_powder_consumption"] * \
+                             jprice["slag_powder"] + jone["mix_limestone_powder_consumption"] * jprice[
+                                 "limestone_powder"] + jone["mix_expansion_agent_dosage"] * jprice["expansion_agent"] + \
+                             jone["mix_other_materials"] * jprice["other_materials"]
+
+        jone["unit_price"] = round(jone["unit_price"] / 1000, 2)
+        jresult["result"].append(jone)
+
+    if len(jresult["result"]) > 0:
+        jresult["result"].insert(0, mix_ratio_optimization(joption, jprice, lrecord[0], model))  # 优化后的数据插入到最前面
+    return jresult
+
+# 推送配合比主函数
+def result_package_(joption, jprice, lrecord, model):
+    jresult = {}
+    jresult["result_long"] = len(lrecord)
+    jresult["result"] = []
+    for record in lrecord:
+        jone = {}
+        jone["mix_cement_consumption"] = round(record.mix_cement_consumption)  # 水泥用量
+
+        if joption["fine_aggregate_1"] == "特细砂":
+            jone["fine_aggregate_1"] = round(record.mix_special_fine_sand_dosage)
+        elif joption["fine_aggregate_1"] == "中砂":
+            jone["fine_aggregate_1"] = round(record.mix_medium_sand_consumption)
+        elif joption["fine_aggregate_1"] == "粗砂":
+            jone["fine_aggregate_1"] = round(record.mix_coarse_sand_consumption)
+        else:
+            jone["fine_aggregate_1"] = 0
+
+        if joption["fine_aggregate_2"] == "特细砂":
+            jone["fine_aggregate_2"] = round(record.mix_special_fine_sand_dosage)
+        elif joption["fine_aggregate_2"] == "中砂":
+            jone["fine_aggregate_2"] = round(record.mix_medium_sand_consumption)
+        elif joption["fine_aggregate_2"] == "粗砂":
+            jone["fine_aggregate_2"] = round(record.mix_coarse_sand_consumption)
+        else:
+            jone["fine_aggregate_2"] = 0
+
+        if joption["fine_aggregate_3"] == "特细砂":
+            jone["fine_aggregate_3"] = (record.mix_special_fine_sand_dosage)
+        elif joption["fine_aggregate_3"] == "中砂":
+            jone["fine_aggregate_3"] = round(record.mix_medium_sand_consumption)
+        elif joption["fine_aggregate_3"] == "粗砂":
+            jone["fine_aggregate_3"] = round(record.mix_coarse_sand_consumption)
+        else:
+            jone["fine_aggregate_3"] = 0
+
+        if joption["coarse_aggregate_1"] == "小石":
+            jone["coarse_aggregate_1"] = round(record.mix_small_stone_dosage)
+        elif joption["coarse_aggregate_1"] == "大石":
+            jone["coarse_aggregate_1"] = round(record.mix_big_stone_dosage)
+        else:
+            jone["coarse_aggregate_1"] = 0
+
+        if joption["coarse_aggregate_2"] == "小石":
+            jone["coarse_aggregate_2"] = round(record.mix_small_stone_dosage)
+        elif joption["coarse_aggregate_2"] == "大石":
+            jone["coarse_aggregate_2"] = round(record.mix_big_stone_dosage)
+        else:
+            jone["coarse_aggregate_2"] = 0
+
+        if joption["coarse_aggregate_3"] == "小石":
+            jone["coarse_aggregate_3"] = round(record.mix_small_stone_dosage)
+        elif joption["coarse_aggregate_3"] == "大石":
+            jone["coarse_aggregate_3"] = round(record.mix_big_stone_dosage)
+        else:
+            jone["coarse_aggregate_3"] = 0
+
+        jone["mix_water_consumption"] = round(record.mix_water_consumption) # 水用量
+        jone["mix_water_reducing_agent_dosage"] = round(record.mix_water_reducing_agent_dosage, 2)  # 减水剂用量
+        jone["mix_fly_ash_dosage"] = round(record.mix_fly_ash_dosage)  # 粉煤灰用量
+        jone["mix_slag_powder_consumption"] = round(record.mix_slag_powder_consumption)  # 矿渣粉用量
+        jone["mix_limestone_powder_consumption"] = round(record.mix_limestone_powder_consumption)  # 石灰石粉用量
+        jone["mix_expansion_agent_dosage"] = round(record.mix_expansion_agent_dosage)  # 膨胀剂用量
         jone["mix_other_materials"] = 0
 
         '''28d抗压强度，表观密度，价格'''

@@ -298,9 +298,9 @@ def main_initial(joption):
 
 if __name__ == '__main__':
     joption = {
-        "mix_period": "高",
+        "mix_period": "",
         "mix_concrete_variety": "常规混凝土",
-        "mix_power_level": "C30",
+        "mix_power_level": "C25",
         "mix_impermeability_rating": "",
         "mix_material_requirements": "",
         "mix_limit_expansion_rate": -1,
@@ -311,9 +311,9 @@ if __name__ == '__main__':
         "cement_28d_compression": -1,
         "cement_supply_unit": "重庆小南海水泥厂",
 
-        "fine_aggregate_1": "特细砂",
-        "fine_aggregate_2": "中砂",
-        "fine_aggregate_3": "粗砂",
+        "fine_aggregate_1": "粗砂",
+        "fine_aggregate_2": "特细砂",
+        "fine_aggregate_3": "",
 
         "coarse_aggregate_1": "小石",
         "coarse_aggregate_2": "大石",
@@ -326,9 +326,9 @@ if __name__ == '__main__':
         "reduce_28d_compressive_strength_ratio": -1,
         "reduce_bleeding_rate_ratio": -1,
 
-        "fly_sample_category": "F类",
-        "fly_breed_grade": "Ⅱ级",
-        "fly_fineness": -1,
+        "fly_sample_category": "",
+        "fly_breed_grade": "",
+        "fly_fineness": 8,
         "fly_water_demand_ratio": -1,
         "fly_loss_on_ignition": -1,
         "fly_activity_index": -1,
@@ -362,5 +362,8 @@ if __name__ == '__main__':
         "other_materials": 0
     }
     lrecord = main_initial(joption)
+    # print("+++++++++++++++++++++++++++++++++++++++++++++++++")
+    # for record in lrecord:
+    #     print(record.mix_invo_id)
     js = result_package(joption, jprice, lrecord)
     print(js)
