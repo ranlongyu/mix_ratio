@@ -2,7 +2,7 @@
 from main_app import app
 from flask import render_template, jsonify, request
 import json
-from push_mix_ratio import result_package
+from push_mix_ratio import result_package_new
 from initial_screen import main_initial
 from deep_model_strength.strength_prediction import presiction, load_torch_model
 
@@ -23,7 +23,7 @@ def index():
 def create_task_test():
     data = json.loads(request.get_data())
     lrecord = main_initial(data["option"])[:10]
-    jresult = result_package(data["option"], data["price"], lrecord, model=model_strength)
+    jresult = result_package_new(data["option"], data["price"], lrecord, model=model_strength)
     return jsonify(jresult), 201
 
 

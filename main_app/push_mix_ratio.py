@@ -345,8 +345,8 @@ def result_package(joption, jprice, lrecord, model):
         jresult["result"].insert(0, mix_ratio_optimization(joption, jprice, lrecord[0], model))  # 优化后的数据插入到最前面
     return jresult
 
-# 推送配合比主函数
-def result_package_(joption, jprice, lrecord, model):
+# 推送配合比主函数(新)
+def result_package_new(joption, jprice, lrecord, model):
     jresult = {}
     jresult["result_long"] = len(lrecord)
     jresult["result"] = []
@@ -371,6 +371,9 @@ def result_package_(joption, jprice, lrecord, model):
             jone["fine_aggregate_2"] = round(record.mix_coarse_sand_consumption)
         else:
             jone["fine_aggregate_2"] = 0
+
+        # xi_1: 粗砂   ->  粗砂用量
+        # xi_2: 特细砂 ->  特细砂用量
 
         if joption["fine_aggregate_3"] == "特细砂":
             jone["fine_aggregate_3"] = (record.mix_special_fine_sand_dosage)
@@ -402,6 +405,12 @@ def result_package_(joption, jprice, lrecord, model):
         else:
             jone["coarse_aggregate_3"] = 0
 
+        jone["mix_special_fine_sand_dosage"] = round(record.mix_special_fine_sand_dosage)
+        jone["mix_medium_sand_consumption"] = round(record.mix_medium_sand_consumption)
+        jone["mix_coarse_sand_consumption"] = round(record.mix_coarse_sand_consumption)
+        jone["mix_small_stone_dosage"] = round(record.mix_small_stone_dosage)
+        jone["mix_big_stone_dosage"] = round(record.mix_big_stone_dosage)
+
         jone["mix_water_consumption"] = round(record.mix_water_consumption) # 水用量
         jone["mix_water_reducing_agent_dosage"] = round(record.mix_water_reducing_agent_dosage, 2)  # 减水剂用量
         jone["mix_fly_ash_dosage"] = round(record.mix_fly_ash_dosage)  # 粉煤灰用量
@@ -412,7 +421,14 @@ def result_package_(joption, jprice, lrecord, model):
 
         '''28d抗压强度，表观密度，价格'''
         jone["mix_28d_strength"] = round(record.mix_28d_strength)
-        jone["mix_apparent_density"] = round(jone["mix_cement_consumption"] + jone["fine_aggregate_1"] + jone[
+        jone["mix_apparent_density"] = round(jone["mix_cement_consumption"] + jone["mix_special_fine_sand_dosage"] + jone[
+            "mix_medium_sand_consumption"] + jone["mix_coarse_sand_consumption"] + jone["mix_small_stone_dosage"] + jone["mix_big_stone_dosage"] + \
+                                             jone["mix_water_consumption"] + jone[
+                                                 "mix_water_reducing_agent_dosage"] + jone["mix_fly_ash_dosage"] + jone[
+                                                 "mix_slag_powder_consumption"] + jone[
+                                                 "mix_limestone_powder_consumption"] + \
+                                             jone["mix_expansion_agent_dosage"] + jone["mix_other_materials"])
+        jone["mix_apparent_density_old"] = round(jone["mix_cement_consumption"] + jone["fine_aggregate_1"] + jone[
             "fine_aggregate_2"] + jone["fine_aggregate_3"] + jone["coarse_aggregate_1"] + jone["coarse_aggregate_2"] + \
                                        jone["coarse_aggregate_3"] + jone["mix_water_consumption"] + jone[
                                            "mix_water_reducing_agent_dosage"] + jone["mix_fly_ash_dosage"] + jone[
@@ -430,6 +446,8 @@ def result_package_(joption, jprice, lrecord, model):
                              jone["mix_other_materials"] * jprice["other_materials"]
 
         jone["unit_price"] = round(jone["unit_price"] / 1000, 2)
+
+        jone["mix_invo_id"] = record.mix_invo_id
         jresult["result"].append(jone)
 
     if len(jresult["result"]) > 0:
