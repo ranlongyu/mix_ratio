@@ -354,6 +354,29 @@ def result_package_new(joption, jprice, lrecord, model):
         jone = {}
         jone["mix_cement_consumption"] = round(record.mix_cement_consumption)  # 水泥用量
 
+        # 砂
+        fine_joption = [0, 0, 0]
+        if joption["fine_aggregate_1"] == "特细砂":
+            fine_joption[0] = 1
+        elif joption["fine_aggregate_1"] == "中砂":
+            fine_joption[1] = 1
+        elif joption["fine_aggregate_1"] == "粗砂":
+            fine_joption[2] = 1
+
+        if joption["fine_aggregate_2"] == "特细砂":
+            fine_joption[0] = 1
+        elif joption["fine_aggregate_2"] == "中砂":
+            fine_joption[1] = 1
+        elif joption["fine_aggregate_2"] == "粗砂":
+            fine_joption[2] = 1
+
+        if joption["fine_aggregate_3"] == "特细砂":
+            fine_joption[0] = 1
+        elif joption["fine_aggregate_3"] == "中砂":
+            fine_joption[1] = 1
+        elif joption["fine_aggregate_3"] == "粗砂":
+            fine_joption[2] = 1
+
         if joption["fine_aggregate_1"] == "特细砂":
             jone["fine_aggregate_1"] = round(record.mix_special_fine_sand_dosage)
         elif joption["fine_aggregate_1"] == "中砂":
@@ -383,6 +406,30 @@ def result_package_new(joption, jprice, lrecord, model):
             jone["fine_aggregate_3"] = round(record.mix_coarse_sand_consumption)
         else:
             jone["fine_aggregate_3"] = 0
+            if sum(fine_joption)==2:
+                if fine_joption[0] == 0:
+                    jone["fine_aggregate_3"] = round(record.mix_special_fine_sand_dosage)
+                elif fine_joption[1] == 0:
+                    jone["fine_aggregate_3"] = round(record.mix_medium_sand_consumption)
+                elif fine_joption[2] == 0:
+                    jone["fine_aggregate_3"] = round(record.mix_coarse_sand_consumption)
+
+        # 石
+        coarse_joption = [0, 0]
+        if joption["coarse_aggregate_1"] == "小石":
+            coarse_joption[0] = 1
+        elif joption["coarse_aggregate_1"] == "大石":
+            coarse_joption[1] = 1
+
+        if joption["coarse_aggregate_2"] == "小石":
+            coarse_joption[0] = 1
+        elif joption["coarse_aggregate_2"] == "大石":
+            coarse_joption[1] = 1
+
+        if joption["coarse_aggregate_3"] == "小石":
+            coarse_joption[0] = 1
+        elif joption["coarse_aggregate_3"] == "大石":
+            coarse_joption[1] = 1
 
         if joption["coarse_aggregate_1"] == "小石":
             jone["coarse_aggregate_1"] = round(record.mix_small_stone_dosage)
@@ -404,6 +451,11 @@ def result_package_new(joption, jprice, lrecord, model):
             jone["coarse_aggregate_3"] = round(record.mix_big_stone_dosage)
         else:
             jone["coarse_aggregate_3"] = 0
+            if sum(coarse_joption)==1:
+                if coarse_joption[0] == 0:
+                    jone["coarse_aggregate_3"] = round(record.mix_small_stone_dosage)
+                elif coarse_joption[1] == 0:
+                    jone["coarse_aggregate_3"] = round(record.mix_big_stone_dosage)
 
         jone["mix_special_fine_sand_dosage"] = round(record.mix_special_fine_sand_dosage)
         jone["mix_medium_sand_consumption"] = round(record.mix_medium_sand_consumption)

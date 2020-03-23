@@ -231,6 +231,86 @@ def score_mix(joption, lrecord):
             elif record.cement_28d_compression < 42.5:
                 score -= rule["cement_28dcompression"]
 
+        # 砂
+        fine_joption = [0, 0, 0]
+        if joption["fine_aggregate_1"] == "特细砂":
+            fine_joption[0] = 1
+        elif joption["fine_aggregate_1"] == "中砂":
+            fine_joption[1] = 1
+        elif joption["fine_aggregate_1"] == "粗砂":
+            fine_joption[2] = 1
+
+        if joption["fine_aggregate_2"] == "特细砂":
+            fine_joption[0] = 1
+        elif joption["fine_aggregate_2"] == "中砂":
+            fine_joption[1] = 1
+        elif joption["fine_aggregate_2"] == "粗砂":
+            fine_joption[2] = 1
+
+        if joption["fine_aggregate_3"] == "特细砂":
+            fine_joption[0] = 1
+        elif joption["fine_aggregate_3"] == "中砂":
+            fine_joption[1] = 1
+        elif joption["fine_aggregate_3"] == "粗砂":
+            fine_joption[2] = 1
+
+        fine_record = [0, 0, 0]
+        if record.mix_special_fine_sand_dosage != -1:
+            fine_record[0] = 1
+        if record.mix_medium_sand_consumption != -1:
+            fine_record[1] = 1
+        if record.mix_coarse_sand_consumption != -1:
+            fine_record[2] = 1
+
+        if fine_joption == fine_record:  # 三个元素都相等
+            pass
+        else:
+            sign = 0
+            for j, l in zip(fine_joption, fine_record):
+                if j == l:
+                    sign = 1
+                    break
+            if sign == 1:
+                score -= rule["fine_aggregate"] / 2
+            else:
+                score -= rule["fine_aggregate"]
+
+        # 石
+        coarse_joption = [0, 0]
+        if joption["coarse_aggregate_1"] == "小石":
+            coarse_joption[0] = 1
+        elif joption["coarse_aggregate_1"] == "大石":
+            coarse_joption[1] = 1
+
+        if joption["coarse_aggregate_2"] == "小石":
+            coarse_joption[0] = 1
+        elif joption["coarse_aggregate_2"] == "大石":
+            coarse_joption[1] = 1
+
+        if joption["coarse_aggregate_3"] == "小石":
+            coarse_joption[0] = 1
+        elif joption["coarse_aggregate_3"] == "大石":
+            coarse_joption[1] = 1
+
+        coarse_record = [0, 0]
+        if record.mix_small_stone_dosage != -1:
+            coarse_record[0] = 1
+        if record.mix_big_stone_dosage != -1:
+            coarse_record[1] = 1
+
+        if coarse_joption == coarse_record:  # 两个元素都相等
+            pass
+        else:
+            sign = 0
+            for j, l in zip(coarse_joption, coarse_record):
+                if j == l:
+                    sign = 1
+                    break
+            if sign == 1:
+                score -= rule["coarse_aggregate"] / 2
+            else:
+                score -= rule["fcoarse_aggregate"]
+
         # 矿渣粉28d活性指数
         # if (record.slag_breed_grade == "S105" and record.slag_28d_activity_index < 105) or (
         #         record.slag_breed_grade == "S95" and record.slag_28d_activity_index < 95) or (
@@ -245,7 +325,7 @@ def score_mix(joption, lrecord):
         #         record.fly_breed_grade == "Ⅲ级" and (
         #         record.fly_fineness > 45 or record.fly_water_demand_ratio > 115)) or (
         #         record.fly_breed_grade not in ["Ⅰ级", "Ⅱ级", "Ⅲ级"]):
-        if record.fly_fineness ==-1 or record.fly_water_demand_ratio == -1:
+        if record.fly_fineness == -1 or record.fly_water_demand_ratio == -1:
             score -= rule["fly_fineness"]
 
         # 粉煤灰烧失量
@@ -283,8 +363,10 @@ def score_mix(joption, lrecord):
 
     # 从大到小排序,返回排序列表的索引
     lscore_index = sorted(range(len(lscore)), key=lambda k: lscore[k], reverse=True)
+
     new_lrecord = []  # 排好序的记录
     for i in lscore_index:
+        print(lscore[i])
         new_lrecord.append(lrecord[i])
 
     return new_lrecord
@@ -299,48 +381,40 @@ def main_initial(joption):
 if __name__ == '__main__':
     joption = {
         "mix_period": "",
-        "mix_concrete_variety": "常规混凝土",
-        "mix_power_level": "C25",
-        "mix_impermeability_rating": "",
+        "mix_concrete_variety": "抗渗混凝土",
+        "mix_power_level": "C40",
+        "mix_impermeability_rating": "P8",
         "mix_material_requirements": "",
         "mix_limit_expansion_rate": -1,
         "mix_slump": 200,
         "mix_expansion": 500,
-
         "cement_breed_grade": "P·O42.5R",
-        "cement_28d_compression": -1,
+        "cement_28d_compression": 48,
         "cement_supply_unit": "重庆小南海水泥厂",
-
         "fine_aggregate_1": "粗砂",
         "fine_aggregate_2": "特细砂",
         "fine_aggregate_3": "",
-
         "coarse_aggregate_1": "小石",
         "coarse_aggregate_2": "大石",
         "coarse_aggregate_3": "",
-
         "reduce_breed_grade": "聚羧酸高性能减水剂-缓凝型",
-        "reduce_recommended_dosage": -1,
-        "reduce_water_reduction_rate": -1,
+        "reduce_recommended_dosage": 1.5,
+        "reduce_water_reduction_rate": 30,
         "reduce_gas_content": -1,
         "reduce_28d_compressive_strength_ratio": -1,
         "reduce_bleeding_rate_ratio": -1,
-
         "fly_sample_category": "",
         "fly_breed_grade": "",
         "fly_fineness": 8,
         "fly_water_demand_ratio": -1,
         "fly_loss_on_ignition": -1,
         "fly_activity_index": -1,
-
         "slag_breed_grade": "",
         "slag_28d_activity_index": -1,
         "slag_supply_unit": "",
-
         "limestone_fineness": -1,
-        "limestone_methylene_blue_value": -1,
-        "limestone_28d_activity_index": -1,
-
+        "limestone_methylene_blue_value": 1.2,
+        "limestone_28d_activity_index": 65,
         "expansion_breed_grade": "",
         "expansion_28d_compressive_strength": -1,
         "expansion_limit_expansion_rate": -1
@@ -365,5 +439,5 @@ if __name__ == '__main__':
     # print("+++++++++++++++++++++++++++++++++++++++++++++++++")
     # for record in lrecord:
     #     print(record.mix_invo_id)
-    js = result_package(joption, jprice, lrecord)
-    print(js)
+    # js = result_package(joption, jprice, lrecord)
+    # print(js)

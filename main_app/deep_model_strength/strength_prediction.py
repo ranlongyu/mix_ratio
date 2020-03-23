@@ -43,6 +43,7 @@ def train_torch_model():
     # 先转换成 torch 能识别的 Dataset
     fetures = torch.from_numpy(fetures).float()
     lable = torch.from_numpy(lable).float()
+    print("训练规模======================",len(lable[:-8000]))
     torch_dataset = Data.TensorDataset(fetures[:-8000], lable[:-8000])
     # 测试数据集
     fetures_test, lable_test = fetures[-8000:], lable[-8000:]
@@ -65,7 +66,7 @@ def train_torch_model():
     writer = SummaryWriter("logs/")
     # 训练
     step = 0
-    for epoch in range(500):
+    for epoch in range(100):
         for batch_x, batch_y in loader:  # 每一步 loader 释放一小批数据用来学习
             step += 1
             model.train()
