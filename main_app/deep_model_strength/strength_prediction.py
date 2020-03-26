@@ -43,7 +43,6 @@ def train_torch_model():
     # 先转换成 torch 能识别的 Dataset
     fetures = torch.from_numpy(fetures).float()
     lable = torch.from_numpy(lable).float()
-    print("训练规模======================",len(lable[:-8000]))
     torch_dataset = Data.TensorDataset(fetures[:-8000], lable[:-8000])
     # 测试数据集
     fetures_test, lable_test = fetures[-8000:], lable[-8000:]
@@ -52,11 +51,11 @@ def train_torch_model():
         dataset=torch_dataset,
         batch_size=16,
         shuffle=True,  # 打乱数据
-        num_workers=4,  # 多线程来读数据
+        num_workers=2,  # 多线程来读数据
         drop_last=True
     )
     # 优化器
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.006)  # 传入 net 的所有参数, 学习率
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)  # 传入 net 的所有参数, 学习率
     loss_func = torch.nn.MSELoss()  # 预测值和真实值的误差计算公式 (均方差)
     # 画图
     try:
@@ -76,7 +75,7 @@ def train_torch_model():
             loss.backward()  # 误差反向传播, 计算参数更新值
             optimizer.step()  # 将参数更新值施加到 net 的 parameters 上
             # 打出来一些数据
-            if step % 400 == 0:
+            if step % 10 == 0:
                 # 训练集
                 writer.add_scalar('LossTrain', loss.detach().numpy(), step)
                 print('Epoch: ', epoch, '| Step: ', step, '| Loss_train: ', loss.data.numpy())
