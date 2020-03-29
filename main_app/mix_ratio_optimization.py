@@ -569,8 +569,8 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
             # 减水剂用量保留两位小数
         if joption["reduce_breed_grade"] != "" or joption["reduce_recommended_dosage"] != -1 or joption[
             "reduce_water_reduction_rate"] != -1:
-            reduce_min = 0.95 * min_max["mix_water_reducing_agent_dosage"][0]  # add by xiaoyu 2020.03.29
-            reduce_max = 1.05 * min_max["mix_water_reducing_agent_dosage"][0]  # add by xiaoyu 2020.03.29
+            reduce_min = 0.9 * min_max["mix_water_reducing_agent_dosage"][0]  # add by xiaoyu 2020.03.29
+            reduce_max = 1.1 * min_max["mix_water_reducing_agent_dosage"][0]  # add by xiaoyu 2020.03.29
             new_record.mix_water_reducing_agent_dosage = round(reduce_min + np.random.randint(1,100)/100 * (reduce_max - reduce_min),2)
             # new_record.mix_water_reducing_agent_dosage = round(min_max["mix_water_reducing_agent_dosage"][0], 2)
         else:
