@@ -288,7 +288,7 @@ def judge_sand_ratio(record):
     sand_consumption = record.mix_special_fine_sand_dosage + record.mix_medium_sand_consumption + record.mix_coarse_sand_consumption
     stone_consumption = record.mix_small_stone_dosage + record.mix_big_stone_dosage
     sand_ratio = sand_consumption / (sand_consumption + stone_consumption)
-    if 0.35 <= sand_ratio <= 0.46:
+    if 0.35 <= sand_ratio <= 0.65:
         return True
     else:
         return False
@@ -450,7 +450,7 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
     '''
     # 记录最优记录
     best_record = None
-    best_unit_price = float("inf") #compute_unit_price(jprice, record)  # float("inf")   # 记录最优价格值，设置最优价格为优化前记录的价格
+    best_unit_price = float("inf")  #compute_unit_price(jprice, record)  # float("inf")   # 记录最优价格值，设置最优价格为优化前记录的价格
     best_apparent_density = None  # 最优表观密度
     # 改变原材料用量，生成新的配合比
     weight_min = 1
