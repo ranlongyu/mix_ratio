@@ -64,14 +64,10 @@ def train_torch_model():
         print("没有发现logs文件目录!")
     writer = SummaryWriter("logs/")
     # 训练
-
-    current_loss = 0.0
-    best_loss = float("inf")
-    count = 0
-    for epoch in range(200):
+    step = 0
+    for epoch in range(100):
         loss_sum=0.0
         step = 0
-
         for batch_x, batch_y in loader:  # 每一步 loader 释放一小批数据用来学习
             step += 1
             model.train()
@@ -82,16 +78,7 @@ def train_torch_model():
             optimizer.step()  # 将参数更新值施加到 net 的 parameters 上
             # 打出来一些数据
             loss_sum += loss.detach().numpy()
-        current_loss = loss_sum /step
-        if current_loss < best_loss:
-            best_loss = current_loss
-            count = 0
-        else:
-            count = count +1;
-        if count > 10:
-            break
-        print(epoch, ' \t', current_loss,'\t', best_loss)
-
+        print('Epoch:' , epoch, ' | Loss_train', loss_sum/step)
             # if step % 100 == 0:
             #     # 训练集
             #     writer.add_scalar('LossTrain', loss.detach().numpy(), step)

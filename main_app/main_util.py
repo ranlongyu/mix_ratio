@@ -76,4 +76,41 @@ def change_joption_jprice(joption, jprice):
         joption["mix_boulder_position"] = "coarse_aggregate_2"
         jprice["mix_boulder"] = jprice["coarse_aggregate_2"]
 
+    # 调整记录中的砂价格
+    # 如果用户没有选粗砂，但是选了另外两种砂，把粗砂价格设置为中沙价格
+    if joption["mix_special_fine_sand_use"] == 1 and joption["mix_medium_sand_use"] == 1 and joption[
+        "mix_coarse_sand_use"] == 0:
+        jprice["mix_coarse_sand"] = jprice["mix_medium_sand"]
+    # 如果用户没有选中砂，但是选了另外两种砂
+    elif joption["mix_special_fine_sand_use"] == 1 and joption["mix_medium_sand_use"] == 0 and joption[
+        "mix_coarse_sand_use"] == 1:
+        jprice["mix_medium_sand"] = jprice["mix_coarse_sand"]
+    # 如果用户没有选特细砂，但是选了另外两种砂
+    elif joption["mix_special_fine_sand_use"] == 0 and joption["mix_medium_sand_use"] == 1 and joption[
+        "mix_coarse_sand_use"] == 1:
+        jprice["mix_special_fine_sand"] = jprice["mix_medium_sand"]
+    # 如果用户只选了特细砂
+    elif joption["mix_special_fine_sand_use"] == 1 and joption["mix_medium_sand_use"] == 0 and joption[
+        "mix_coarse_sand_use"] == 0:
+        jprice["mix_medium_sand"] = jprice["mix_special_fine_sand"]
+        jprice["mix_coarse_sand"] = jprice["mix_special_fine_sand"]
+    # 如果用户只选了粗砂
+    elif joption["mix_special_fine_sand_use"] == 0 and joption["mix_medium_sand_use"] == 0 and joption[
+        "mix_coarse_sand_use"] == 1:
+        jprice["mix_medium_sand"] = jprice["mix_coarse_sand"]
+        jprice["mix_special_fine_sand"] = jprice["mix_coarse_sand"]
+    # 如果用户只选了中砂
+    elif joption["mix_special_fine_sand_use"] == 0 and joption["mix_medium_sand_use"] == 1 and joption[
+        "mix_coarse_sand_use"] == 0:
+        jprice["mix_coarse_sand"] = jprice["mix_medium_sand"]
+        jprice["mix_special_fine_sand"] = jprice["mix_medium_sand"]
+
+    # 调整记录中的石用量
+    # 如果用户只选了大石
+    if joption["mix_rocklet_use"] == 0 and joption["mix_boulder_use"] == 1:
+        jprice["mix_rocklet"] = jprice["mix_boulder"]
+    # 如果用户只选了小石
+    elif joption["mix_boulder_use"] == 0 and joption["mix_rocklet_use"] == 1:
+        jprice["mix_boulder"] = jprice["mix_rocklet"]
+
     return joption, jprice

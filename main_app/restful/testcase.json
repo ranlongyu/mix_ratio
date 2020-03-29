@@ -11,8 +11,8 @@
     "cement_breed_grade": "P·O42.5R",
     "cement_28d_compression": 48,
     "cement_supply_unit": "重庆小南海水泥厂",
-    "fine_aggregate_1": "粗砂",
-    "fine_aggregate_2": "特细砂",
+    "fine_aggregate_1": "特细砂",
+    "fine_aggregate_2": "中砂",
     "fine_aggregate_3": "",
     "coarse_aggregate_1": "小石",
     "coarse_aggregate_2": "大石",
@@ -23,8 +23,8 @@
     "reduce_gas_content": -1,
     "reduce_28d_compressive_strength_ratio": -1,
     "reduce_bleeding_rate_ratio": -1,
-    "fly_sample_category": "F类",
-    "fly_breed_grade": "II级",
+    "fly_sample_category": "II级",
+    "fly_breed_grade": "F类",
     "fly_fineness": -1,
     "fly_water_demand_ratio": -1,
     "fly_loss_on_ignition": -1,
@@ -40,19 +40,22 @@
     "expansion_limit_expansion_rate": -1
   },
   "price": {
-    "cement": 324,
-    "fine_aggregate_1": 90,
-    "fine_aggregate_2": 90,
+    "cement": 3,
+    "fine_aggregate_1": 1,
+    "fine_aggregate_2": 1,
     "fine_aggregate_3": 1,
-    "coarse_aggregate_1": 80,
-    "coarse_aggregate_2": 80,
+    "coarse_aggregate_1": 1,
+    "coarse_aggregate_2": 1,
     "coarse_aggregate_3": 0,
-    "water": 5,
-    "water_reduce_agent": 2000,
-    "fly_ash": 180,
-    "slag_powder": 170,
-    "limestone_powder": 160,
-    "expansion_agent": 150,
+    "water": 1,
+    "water_reduce_agent": 5,
+    "fly_ash": 2,
+    "slag_powder": 1.5,
+    "limestone_powder": 1.2,
+    "expansion_agent": 5,
     "other_materials": 0
   }
 }
+
+
+
