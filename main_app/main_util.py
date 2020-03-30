@@ -1,4 +1,4 @@
-# 获取石和砂是否使用、价格和位置等信息
+# 获取石、砂、参合料是否使用、价格和位置等信息
 def change_joption_jprice(joption, jprice):
     # 是否使用
     joption["mix_special_fine_sand_use"] = 0
@@ -6,6 +6,11 @@ def change_joption_jprice(joption, jprice):
     joption["mix_coarse_sand_use"] = 0
     joption["mix_rocklet_use"] = 0
     joption["mix_boulder_use"] = 0
+    joption["fly_use"] = 0
+    joption["slag_use"] = 0
+    joption["limestone_use"] = 0
+    joption["expansion_use"] = 0
+    joption["reduce_use"] = 0
     # 位置
     joption["mix_special_fine_position"] = None
     joption["mix_medium_sand_position"] = None
@@ -112,5 +117,28 @@ def change_joption_jprice(joption, jprice):
     # 如果用户只选了小石
     elif joption["mix_boulder_use"] == 0 and joption["mix_rocklet_use"] == 1:
         jprice["mix_boulder"] = jprice["mix_rocklet"]
+
+    # 参合料、减水剂
+    if joption["fly_sample_category"] != "" or joption["fly_breed_grade"] != "" or joption["fly_fineness"] != -1 or \
+            joption["fly_water_demand_ratio"] != -1 or joption["fly_loss_on_ignition"] != -1 or joption[
+        "fly_activity_index"] != -1:  # 用户选择了粉煤灰
+        joption["fly_use"] = 1
+
+    if joption["slag_breed_grade"] != "" or joption["slag_28d_activity_index"] != -1 or joption[
+        "slag_supply_unit"] != "":
+        joption["slag_use"] = 1
+
+    if joption["limestone_fineness"] != -1 or joption["limestone_methylene_blue_value"] != -1 or joption[
+        "limestone_28d_activity_index"] != -1:
+        joption["limestone_use"] = 1
+
+    if joption["expansion_breed_grade"] != "" or joption["expansion_28d_compressive_strength"] != -1 or joption[
+        "expansion_limit_expansion_rate"] != -1:
+        joption["expansion_use"] = 1
+
+    if joption["reduce_breed_grade"] != "" or joption["reduce_recommended_dosage"] != -1 or joption[
+        "reduce_water_reduction_rate"] != -1 or joption["reduce_gas_content"] != -1 or joption[
+        "reduce_28d_compressive_strength_ratio"] != -1 or joption["reduce_bleeding_rate_ratio"] != -1:
+        joption["reduce_use"] = 1
 
     return joption, jprice

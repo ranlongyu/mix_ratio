@@ -166,6 +166,8 @@ def compute_min_max(lrecord, joption):
                 else:
                     avg = sum(value_di.get(item)) / len(value_di.get(item))
                 min_max[item] = [avg, avg]
+            elif item == "design_mix_water_binder_ratio":
+                min_max[item] = [min(value_di.get(item)) * 0.95, max(value_di.get(item)) * 1.05]
             else:
                 min_max[item] = [min(value_di.get(item)), max(value_di.get(item))]
         else:  # 如果没有值
@@ -182,7 +184,7 @@ def compute_min_max(lrecord, joption):
     itemli = ["mix_fly_ash_dosage", "mix_slag_powder_consumption",
               "mix_limestone_powder_consumption", "mix_expansion_agent_dosage"]
     for item in itemli:
-        min_max[item][0] = 20  # max(40, min_max[item][0])
+        min_max[item][0] = 40  # max(40, min_max[item][0])
         min_max[item][1] = 60  # min(60, min_max[item][1])
     return min_max
 
@@ -268,10 +270,11 @@ def judge_sand_ratio(record):
         return False
 
 
-# 参合料
-def judge_canheliao(record, min_max):
+# 参合料总和
+def judge_canheliao(record, joption):
+    kinds = joption["fly_use"] + joption["limestone_use"] + joption["expansion_use"] + joption["slag_use"]
     canheliao = record.mix_fly_ash_dosage + record.mix_limestone_powder_consumption + record.mix_expansion_agent_dosage + record.mix_slag_powder_consumption
-    if min_max["canheliao"][0] <= canheliao <= min_max["canheliao"][1]:
+    if kinds * 40 <= canheliao <= kinds * 60:
         return True
     else:
         return False
@@ -291,29 +294,28 @@ def judge_water_reducing_agent_cement_dosage_ratio(record):
 
 # 判断材料是否符合需求
 def judge_cailiao(record, joption):
-    if joption["fly_sample_category"] != "" or joption["fly_breed_grade"] != "" or joption[
-        "fly_fineness"] != -1:  # 用户选择了粉煤灰
+    if joption["fly_use"] == 1:  # 用户选择了粉煤灰
         if not record.mix_fly_ash_dosage > 0.1:  # 记录中没有
             return False
     else:
         if record.mix_fly_ash_dosage > 0.1:  # 记录中有
             return False
 
-    if joption["slag_breed_grade"] != "" or joption["slag_28d_activity_index"] != -1:
+    if joption["slag_use"] == 1:
         if not record.mix_slag_powder_consumption > 0.1:  # 记录中没有
             return False
     else:
         if record.mix_slag_powder_consumption > 0.1:  # 记录中有
             return False
 
-    if joption["limestone_fineness"] != -1 or joption["limestone_methylene_blue_value"] != -1:
+    if joption["limestone_use"] == 1:
         if not record.mix_limestone_powder_consumption > 0.1:  # 记录中没有
             return False
     else:
         if record.mix_limestone_powder_consumption > 0.1:  # 记录中有
             return False
 
-    if joption["expansion_breed_grade"] != "" or joption["expansion_28d_compressive_strength"] != -1:
+    if joption["expansion_use"] == 1:
         if not record.mix_expansion_agent_dosage > 0.1:  # 记录中没有
             return False
     else:
@@ -355,8 +357,7 @@ def judge_cailiao(record, joption):
         if record.mix_big_stone_dosage > 0.1:  # 记录中有
             return False
 
-    if joption["reduce_breed_grade"] != "" or joption["reduce_recommended_dosage"] != -1 or joption[
-        "reduce_water_reduction_rate"] != -1:
+    if joption["reduce_use"] == 1:
         if not record.mix_water_reducing_agent_dosage > 0.1:  # 记录中没有
             return False
     else:
@@ -424,7 +425,7 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
     '''
     # 记录最优记录
     best_record = None
-    best_unit_price = float("inf")  #compute_unit_price(jprice, record)  # float("inf")   # 记录最优价格值，设置最优价格为优化前记录的价格
+    best_unit_price = float("inf")  # compute_unit_price(jprice, record)  # float("inf")   # 记录最优价格值，设置最优价格为优化前记录的价格
     best_apparent_density = None  # 最优表观密度
     # 改变原材料用量，生成新的配合比
     weight_min = 1
@@ -436,15 +437,15 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
         # 调整内容：水泥、粉煤灰、矿渣粉、石灰石粉、膨胀剂、水、砂、石；
         # 调整范围：10条记录的最小最大值
         # 取随机值
-        if min_max["mix_cement_consumption"][0] < min_max["mix_cement_consumption"][1]:
+        if min_max["mix_cement_consumption"][0]+1 < min_max["mix_cement_consumption"][1]:
             new_record.mix_cement_consumption = np.random.randint(
                 int(weight_min * min_max["mix_cement_consumption"][0]),
                 int(weight_max * min_max["mix_cement_consumption"][1]))
         else:
             new_record.mix_cement_consumption = min_max["mix_cement_consumption"][0]
 
-        if joption["fly_sample_category"] != "" or joption["fly_breed_grade"] != "" or joption["fly_fineness"] != -1:
-            if min_max["mix_fly_ash_dosage"][0] < min_max["mix_fly_ash_dosage"][1]:
+        if joption["fly_use"] == 1:
+            if min_max["mix_fly_ash_dosage"][0]+1 < min_max["mix_fly_ash_dosage"][1]:
                 new_record.mix_fly_ash_dosage = np.random.randint(
                     int(weight_min * min_max["mix_fly_ash_dosage"][0]),
                     int(weight_max * min_max["mix_fly_ash_dosage"][1]))
@@ -453,8 +454,8 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
         else:
             new_record.mix_fly_ash_dosage = 0
 
-        if joption["slag_breed_grade"] != "" or joption["slag_28d_activity_index"] != -1:
-            if min_max["mix_slag_powder_consumption"][0] < min_max["mix_slag_powder_consumption"][1]:
+        if joption["slag_use"] == 1:
+            if min_max["mix_slag_powder_consumption"][0]+1 < min_max["mix_slag_powder_consumption"][1]:
                 new_record.mix_slag_powder_consumption = np.random.randint(
                     int(weight_min * min_max["mix_slag_powder_consumption"][0]),
                     int(weight_max * min_max["mix_slag_powder_consumption"][1]))
@@ -463,8 +464,8 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
         else:
             new_record.mix_slag_powder_consumption = 0
 
-        if joption["limestone_fineness"] != -1 or joption["limestone_methylene_blue_value"] != -1:
-            if min_max["mix_limestone_powder_consumption"][0] < min_max["mix_limestone_powder_consumption"][1]:
+        if joption["limestone_use"] == 1:
+            if min_max["mix_limestone_powder_consumption"][0]+1 < min_max["mix_limestone_powder_consumption"][1]:
                 new_record.mix_limestone_powder_consumption = np.random.randint(
                     int(weight_min * min_max["mix_limestone_powder_consumption"][0]),
                     int(weight_max * min_max["mix_limestone_powder_consumption"][1]))
@@ -473,8 +474,8 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
         else:
             new_record.mix_limestone_powder_consumption = 0
 
-        if joption["expansion_breed_grade"] != "" or joption["expansion_28d_compressive_strength"] != -1:
-            if min_max["mix_expansion_agent_dosage"][0] < min_max["mix_expansion_agent_dosage"][1]:
+        if joption["expansion_use"] == 1:
+            if min_max["mix_expansion_agent_dosage"][0]+1 < min_max["mix_expansion_agent_dosage"][1]:
                 new_record.mix_expansion_agent_dosage = np.random.randint(
                     int(weight_min * min_max["mix_expansion_agent_dosage"][0]),
                     int(weight_max * min_max["mix_expansion_agent_dosage"][1]))
@@ -483,7 +484,7 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
         else:
             new_record.mix_expansion_agent_dosage = 0
 
-        if min_max["mix_water_consumption"][0] < min_max["mix_water_consumption"][1]:
+        if min_max["mix_water_consumption"][0]+1 < min_max["mix_water_consumption"][1]:
             new_record.mix_water_consumption = np.random.randint(
                 int(weight_min * min_max["mix_water_consumption"][0]),
                 int(weight_max * min_max["mix_water_consumption"][1]))
@@ -491,7 +492,7 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
             new_record.mix_water_consumption = min_max["mix_water_consumption"][0]
 
         if joption["mix_special_fine_sand_use"] == 1:
-            if min_max["mix_special_fine_sand_dosage"][0] < min_max["mix_special_fine_sand_dosage"][1]:
+            if min_max["mix_special_fine_sand_dosage"][0]+1 < min_max["mix_special_fine_sand_dosage"][1]:
                 new_record.mix_special_fine_sand_dosage = np.random.randint(
                     int(weight_min * min_max["mix_special_fine_sand_dosage"][0]),
                     int(weight_max * min_max["mix_special_fine_sand_dosage"][1]))
@@ -501,7 +502,7 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
             new_record.mix_special_fine_sand_dosage = 0
 
         if joption["mix_medium_sand_use"] == 1:
-            if min_max["mix_medium_sand_consumption"][0] < min_max["mix_medium_sand_consumption"][1]:
+            if min_max["mix_medium_sand_consumption"][0]+1 < min_max["mix_medium_sand_consumption"][1]:
                 new_record.mix_medium_sand_consumption = np.random.randint(
                     int(weight_min * min_max["mix_medium_sand_consumption"][0]),
                     int(weight_max * min_max["mix_medium_sand_consumption"][1]))
@@ -511,7 +512,7 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
             new_record.mix_medium_sand_consumption = 0
 
         if joption["mix_coarse_sand_use"] == 1:
-            if min_max["mix_coarse_sand_consumption"][0] < min_max["mix_coarse_sand_consumption"][1]:
+            if min_max["mix_coarse_sand_consumption"][0]+1 < min_max["mix_coarse_sand_consumption"][1]:
                 new_record.mix_coarse_sand_consumption = np.random.randint(
                     int(weight_min * min_max["mix_coarse_sand_consumption"][0]),
                     int(weight_max * min_max["mix_coarse_sand_consumption"][1]))
@@ -521,7 +522,7 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
             new_record.mix_coarse_sand_consumption = 0
 
         if joption["mix_rocklet_use"] == 1:
-            if min_max["mix_small_stone_dosage"][0] < min_max["mix_small_stone_dosage"][1]:
+            if min_max["mix_small_stone_dosage"][0]+1 < min_max["mix_small_stone_dosage"][1]:
                 new_record.mix_small_stone_dosage = np.random.randint(
                     int(weight_min * min_max["mix_small_stone_dosage"][0]),
                     int(weight_max * min_max["mix_small_stone_dosage"][1]))
@@ -531,7 +532,7 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
             new_record.mix_small_stone_dosage = 0
 
         if joption["mix_boulder_use"] == 1:
-            if min_max["mix_big_stone_dosage"][0] < min_max["mix_big_stone_dosage"][1]:
+            if min_max["mix_big_stone_dosage"][0]+1 < min_max["mix_big_stone_dosage"][1]:
                 new_record.mix_big_stone_dosage = np.random.randint(
                     int(weight_min * min_max["mix_big_stone_dosage"][0]),
                     int(weight_max * min_max["mix_big_stone_dosage"][1]))
@@ -541,8 +542,7 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
             new_record.mix_big_stone_dosage = 0
 
             # 减水剂用量保留两位小数
-        if joption["reduce_breed_grade"] != "" or joption["reduce_recommended_dosage"] != -1 or joption[
-            "reduce_water_reduction_rate"] != -1:
+        if joption["reduce_use"] == 1:
             # reduce_min = 0.9 * min_max["mix_water_reducing_agent_dosage"][0]  # add by xiaoyu 2020.03.29
             # reduce_max = 1.1 * min_max["mix_water_reducing_agent_dosage"][0]  # add by xiaoyu 2020.03.29
             # new_record.mix_water_reducing_agent_dosage = round(reduce_min + np.random.randint(1,100)/100 * (reduce_max - reduce_min),2)
@@ -568,16 +568,14 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
             continue
         if not judge_sand_ratio(new_record):
             continue
-        if not judge_canheliao(new_record, min_max):
+        if not judge_canheliao(new_record, joption):
             continue
 
         # 计算生成的配合比的价格
         new_record.mix_28d_strength = float(presiction(new_record, model=model)["strength"])
-        if user_mix_power_level * 1.05 <= new_record.mix_28d_strength <= user_mix_power_level * 1.4:
+        if user_mix_power_level * 1.01 <= new_record.mix_28d_strength: # <= user_mix_power_level * 1.4:
             best_record = new_record
             best_unit_price = new_unit_price
             best_apparent_density = new_apparent_density
 
     return best_record, best_apparent_density, best_unit_price
-
-
