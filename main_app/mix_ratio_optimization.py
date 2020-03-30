@@ -238,32 +238,6 @@ def judge_water_binder_ratio(mix_power_level, record, joption, min_max):
             return False
         else:
             return True
-        '''
-        try:
-            regex1 = re.compile("^P(.+)")
-            mix_impermeability_rating = float(regex1.findall(joption["mix_power_level"])[0])
-            if binder_consumption <= 320:
-                return False
-            if mix_impermeability_rating == 6:
-                if 20 <= mix_power_level <= 30 and design_mix_water_binder_ratio > 0.6:
-                    return False
-                elif 50 <= mix_power_level and design_mix_water_binder_ratio > 0.55:
-                    return False
-            elif 8 <= mix_impermeability_rating <= 12:
-                if 20 <= mix_power_level <= 30 and design_mix_water_binder_ratio > 0.55:
-                    return False
-                elif 50 <= mix_power_level and design_mix_water_binder_ratio > 0.5:
-                    return False
-            elif 12 < mix_impermeability_rating:
-                if 20 <= mix_power_level <= 30 and design_mix_water_binder_ratio > 0.5:
-                    return False
-                elif 50 <= mix_power_level and design_mix_water_binder_ratio > 0.45:
-                    return False
-            else:
-                return True
-        except:
-            return True
-        '''
     else:
         if mix_power_level < 30 and 260 <= binder_consumption <= 400:  # and design_mix_water_binder_ratio <= 0.6
             return True
@@ -455,7 +429,7 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
     # 改变原材料用量，生成新的配合比
     weight_min = 1
     weight_max = 1
-    for i in range(50000):
+    for i in range(10000):
         # 初始化new_record，每次循环都改变该值
         new_record = copy.deepcopy(record)
 
@@ -604,6 +578,6 @@ def main_mix_ratio_optimization(joption, jprice, lrecord, model):
             best_unit_price = new_unit_price
             best_apparent_density = new_apparent_density
 
-        return best_record, best_apparent_density, best_unit_price
+    return best_record, best_apparent_density, best_unit_price
 
 

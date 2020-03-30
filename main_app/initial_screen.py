@@ -274,6 +274,7 @@ def score_mix(joption, lrecord):
 
     new_lrecord = []  # 排好序的记录
     for i in lscore_index:
+        print(lscore[i])
         new_lrecord.append(lrecord[i])
 
     return new_lrecord

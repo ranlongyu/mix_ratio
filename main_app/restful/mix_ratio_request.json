@@ -1,9 +1,9 @@
 {
   "option": {
     "mix_period": "",
-    "mix_concrete_variety": "常规混凝土",
-    "mix_power_level": "C30",
-    "mix_impermeability_rating": "",
+    "mix_concrete_variety": "抗渗混凝土",
+    "mix_power_level": "C60",
+    "mix_impermeability_rating": "P8",
     "mix_material_requirements": "",
     "mix_limit_expansion_rate": -1,
     "mix_slump": 200,
@@ -18,7 +18,7 @@
     "coarse_aggregate_2": "大石",
     "coarse_aggregate_3": "",
     "reduce_breed_grade": "聚羧酸高性能减水剂-缓凝型",
-    "reduce_recommended_dosage":-1,
+    "reduce_recommended_dosage":1.5,
     "reduce_water_reduction_rate": 30,
     "reduce_gas_content": -1,
     "reduce_28d_compressive_strength_ratio": -1,
@@ -51,7 +51,7 @@
     "water_reduce_agent": 2000,
     "fly_ash": 180,
     "slag_powder": 170,
-    "limestone_powder": 160,
+    "limestone_powder": 230,
     "expansion_agent": 150,
     "other_materials": 0
   }
