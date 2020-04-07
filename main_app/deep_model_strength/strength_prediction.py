@@ -49,9 +49,9 @@ def train_torch_model():
     # 把 dataset 放入 DataLoader
     loader = Data.DataLoader(
         dataset=torch_dataset,
-        batch_size=16,
+        batch_size=32,
         shuffle=True,  # 打乱数据
-        num_workers=4,  # 多线程来读数据
+        num_workers=2,  # 多线程来读数据
         drop_last=True
     )
     # 优化器
@@ -87,7 +87,7 @@ def train_torch_model():
             best_loss = current_loss
             count = 0
         else:
-            count = count +1;
+            count = count +1
         if count > 10:
             break
         print(epoch, ' \t', current_loss,'\t', best_loss)
@@ -219,4 +219,25 @@ def presiction(data, model):
 
 
 if __name__ == '__main__':
-    train_torch_model()
+    # train_torch_model()
+    # 测试集
+    fetures, lable = main_get_data(config.CONNECT)
+    # 先转换成 torch 能识别的 Dataset
+    fetures = torch.from_numpy(fetures).float()
+    lable = torch.from_numpy(lable).float()
+    # torch_dataset = Data.TensorDataset(fetures[:-8000], lable[:-8000])
+    # 测试数据集
+    fetures_test, lable_test = fetures[-8000:], lable[-8000:]
+    model = load_torch_model()
+    lossli = []
+    model.eval()
+    for i, feture in enumerate(fetures_test):
+        prediction = model(feture.unsqueeze(0))  # 数据增加一维，喂给 net 训练数据 x, 输出预测值
+        lossli.append((abs(prediction - lable_test[i])).tolist()[0][0])
+    print(len(lossli))
+    print(lossli[-10:])
+    print("MAE： ", sum(lossli) / len(lossli))
+    plt.plot(lossli[-10:])
+    plt.ylabel('abs error')
+    plt.xlabel(('records'))
+    plt.show()
