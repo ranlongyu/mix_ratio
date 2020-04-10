@@ -26,7 +26,7 @@ def create_task_test():
     data = json.loads(request.get_data())
     joption = data["option"]
     jprice = data["price"]
-    ## 获取石和砂是否使用、价格和位置等信息
+    # 获取石和砂是否使用、价格和位置等信息
     joption, jprice = change_joption_jprice(joption, jprice)
     lrecord = main_initial(joption)[:10]
     jresult = result_package_new(joption, jprice, lrecord)

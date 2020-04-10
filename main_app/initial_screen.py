@@ -271,9 +271,11 @@ def score_mix(joption, lrecord):
     # 从大到小排序,返回排序列表的索引
     lscore_index = sorted(range(len(lscore)), key=lambda k: lscore[k], reverse=True)
 
+    print("打印评分")
     new_lrecord = []  # 排好序的记录
     for i in lscore_index:
         new_lrecord.append(lrecord[i])
+        print(lscore[i])
 
     return new_lrecord
 
