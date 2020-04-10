@@ -169,6 +169,11 @@ def score_mix(joption, lrecord):
         if record.mix_coarse_sand_consumption != -1:
             fine_record[2] = 1
 
+        # 用户页面选了粗砂 和细沙， 但这里要求三个元素都匹配， 其实，只要记录中 用粗和细砂都可以了， 不需要管是否用了中沙。都可以得分。
+        # [200, 200, 200]
+        # [200, 0, 400]
+        #[600, 0, 0]
+        # 但代码中要求三种砂全匹配，才能得分。 这样的话，记录1只有细沙，和记录2有细沙和粗砂，实际上得到的分是一样的，即一半分。 其实是不合理的。 记录2应该的满分。
         if fine_joption == fine_record:  # 三个元素都相等
             pass
         else:
@@ -218,64 +223,66 @@ def score_mix(joption, lrecord):
             else:
                 score -= rule["fcoarse_aggregate"]
 
-        # 矿渣粉28d活性指数
-        # if (record.slag_breed_grade == "S105" and record.slag_28d_activity_index < 105) or (
-        #         record.slag_breed_grade == "S95" and record.slag_28d_activity_index < 95) or (
-        #         record.slag_breed_grade == "S75" and record.slag_28d_activity_index < 75):
-        if record.slag_breed_grade == -1:
-            score -= rule["slag_28d_activity_index"]
+        if joption["slag_use"] == 1:  # 用户用了矿渣粉
+            # 矿渣粉28d活性指数
+            if record.slag_breed_grade == -1:
+                score -= rule["slag_28d_activity_index"]
+        else:
+            if record.mix_slag_powder_consumption > 0.1:
+                score -= rule["slag_28d_activity_index"]
 
-        # 粉煤灰细度、需水量比
-        # if (record.fly_breed_grade == "Ⅰ级" and (record.fly_fineness > 12 or record.fly_water_demand_ratio > 95)) or (
-        #         record.fly_breed_grade == "Ⅱ级" and (
-        #         record.fly_fineness > 30 or record.fly_water_demand_ratio > 95)) or (
-        #         record.fly_breed_grade == "Ⅲ级" and (
-        #         record.fly_fineness > 45 or record.fly_water_demand_ratio > 115)) or (
-        #         record.fly_breed_grade not in ["Ⅰ级", "Ⅱ级", "Ⅲ级"]):
-        if record.fly_fineness == -1 or record.fly_water_demand_ratio == -1:
-            score -= rule["fly_fineness"]
+        if joption["fly_use"] == 1:
+            # 粉煤灰细度、需水量比
+            if record.fly_fineness == -1 or record.fly_water_demand_ratio == -1:
+                score -= rule["fly_fineness"]
 
-        # 粉煤灰烧失量
-        # if (record.fly_breed_grade == "Ⅰ级" and record.fly_loss_on_ignition > 5) or (
-        #         record.fly_breed_grade == "Ⅱ级" and record.fly_loss_on_ignition > 8) or (
-        #         record.fly_breed_grade == "Ⅲ级" and record.fly_loss_on_ignition > 10) or (
-        #         record.fly_breed_grade not in ["Ⅰ级", "Ⅱ级", "Ⅲ级"]):
-        if record.fly_loss_on_ignition == -1:
-            score -= rule["fly_loss_on_ignition"]
+            # 粉煤灰烧失量
+            if record.fly_loss_on_ignition == -1:
+                score -= rule["fly_loss_on_ignition"]
+        else:
+            if record.mix_fly_ash_dosage > 0.1:
+                score -= (rule["fly_fineness"] + rule["fly_loss_on_ignition"])
 
-        # 膨胀剂限制膨胀率：水中7d限制膨胀率
-        # if (record.expansion_breed_grade == "Ⅰ级" and record.expansion_limit_expansion_rate < 0.035) or (
-        #         record.expansion_breed_grade == "Ⅱ级" and record.expansion_limit_expansion_rate < 0.05):
-        if record.expansion_limit_expansion_rate == -1:
-            score -= rule["expansion_limit_expansion_rate"]
+        if joption["expansion_use"] == 1:
+            # 膨胀剂限制膨胀率：水中7d限制膨胀率
+            if record.expansion_limit_expansion_rate == -1:
+                score -= rule["expansion_limit_expansion_rate"]
 
-        # 膨胀剂限制膨胀率28d抗压强度
-        # if (record.expansion_breed_grade == "Ⅰ级" and record.expansion_28d_compressive_strength < 22.5) or (
-        #         record.expansion_breed_grade == "Ⅱ级" and record.expansion_28d_compressive_strength < 42.5):
-        if record.expansion_28d_compressive_strength == -1:
-            score -= rule["expansion_28d_compressive_strength"]
+            # 膨胀剂限制膨胀率28d抗压强度
+            if record.expansion_28d_compressive_strength == -1:
+                score -= rule["expansion_28d_compressive_strength"]
+        else:
+            if record.mix_expansion_agent_dosage > 0.1:
+                score -= (rule["expansion_limit_expansion_rate"] + rule["expansion_limit_expansion_rate"])
 
-        # 外加剂（减水剂）减水率
-        if record.reduce_water_reduction_rate == -1:
-            score -= rule["reduce_water_reduction_rate"]
+        if joption["reduce_use"] == 1:
+            # 外加剂（减水剂）减水率
+            if record.reduce_water_reduction_rate == -1:
+                score -= rule["reduce_water_reduction_rate"]
+        else:
+            if record.mix_water_reducing_agent_dosage > 0.1:
+                score -= rule["reduce_water_reduction_rate"]
 
-        # 石灰石粉细度
-        if record.limestone_fineness == -1:
-            score -= rule["limestone_fineness"]
+        if joption["expansion_use"] == 1:
+            # 石灰石粉细度
+            if record.limestone_fineness == -1:
+                score -= rule["limestone_fineness"]
 
-        # 石灰石粉亚甲蓝值
-        if record.limestone_methylene_blue_value == -1:
-            score -= rule["limestone_methylene_blue_value"]
+            # 石灰石粉亚甲蓝值
+            if record.limestone_methylene_blue_value == -1:
+                score -= rule["limestone_methylene_blue_value"]
+        else:
+            if record.mix_limestone_powder_consumption > 0.1:
+                score -= (rule["limestone_fineness"] + rule["limestone_methylene_blue_value"])
+
         lscore.append(score)
 
     # 从大到小排序,返回排序列表的索引
     lscore_index = sorted(range(len(lscore)), key=lambda k: lscore[k], reverse=True)
 
-    print("打印评分")
     new_lrecord = []  # 排好序的记录
     for i in lscore_index:
         new_lrecord.append(lrecord[i])
-        print(lscore[i])
 
     return new_lrecord
 
@@ -284,4 +291,3 @@ def main_initial(joption):
     lrecord = filter_mix(joption)
     lrecord = score_mix(joption, lrecord)
     return lrecord
-
