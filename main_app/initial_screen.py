@@ -59,15 +59,15 @@ def filter_mix(joption):
 def score_mix(joption, lrecord):
     # 评分规则1
     rule1 = {
-        "mix_material_requirements": 10,  # 材料要求
+        "mix_material_requirements": 4,  # 材料要求
         "work_performence": 5,  # 工作性能
         "mix_power_level": 20,  # 强度检测数据
         "mix_limit_expansion_rate": 7,  # 限制膨胀率
         # 耐久性技术要求没有
         "cement_supply_unit": 5,  # 水泥生产厂家
-        "fine_aggregate": 8,  # 细集料品种、类型
-        "coarse_aggregate": 8,  # 粗集料品种、类型
-        "cement_28dcompression": 10,  # 水泥的抗压强度等级
+        "fine_aggregate": 10,  # 细集料品种、类型
+        "coarse_aggregate": 10,  # 粗集料品种、类型
+        "cement_28dcompression": 12,  # 水泥的抗压强度等级
         "slag_28d_activity_index": 3,  # 矿渣粉28d活性指数
         "fly_fineness": 3,  # 粉煤灰细度，需水量比
         "expansion_limit_expansion_rate": 3,  # 膨胀剂限制膨胀率
@@ -85,8 +85,8 @@ def score_mix(joption, lrecord):
         "mix_limit_expansion_rate": 7,  # 限制膨胀率
         # 耐久性技术要求没有
         "cement_supply_unit": 8,  # 水泥生产厂家
-        "fine_aggregate": 8,  # 细集料品种、类型
-        "coarse_aggregate": 8,  # 粗集料品种、类型
+        "fine_aggregate": 10,  # 细集料品种、类型
+        "coarse_aggregate": 10,  # 粗集料品种、类型
         "cement_28dcompression": 12,  # 水泥的抗压强度等级
         "slag_28d_activity_index": 3,  # 矿渣粉28d活性指数
         "fly_fineness": 3,  # 粉煤灰细度，需水量比
@@ -162,17 +162,17 @@ def score_mix(joption, lrecord):
             fine_joption[2] = 1
 
         fine_record = [0, 0, 0]
-        if record.mix_special_fine_sand_dosage != -1:
+        if record.mix_special_fine_sand_dosage > 0.1:
             fine_record[0] = 1
-        if record.mix_medium_sand_consumption != -1:
+        if record.mix_medium_sand_consumption > 0.1:
             fine_record[1] = 1
-        if record.mix_coarse_sand_consumption != -1:
+        if record.mix_coarse_sand_consumption > 0.1:
             fine_record[2] = 1
 
-        # 用户页面选了粗砂 和细沙， 但这里要求三个元素都匹配， 其实，只要记录中 用粗和细砂都可以了， 不需要管是否用了中沙。都可以得分。
+        # 用户页面选了粗砂 和细沙，但这里要求三个元素都匹配，其实，只要记录中 用粗和细砂都可以了，不需要管是否用了中沙。都可以得分。
         # [200, 200, 200]
         # [200, 0, 400]
-        #[600, 0, 0]
+        # [600, 0, 0]
         # 但代码中要求三种砂全匹配，才能得分。 这样的话，记录1只有细沙，和记录2有细沙和粗砂，实际上得到的分是一样的，即一半分。 其实是不合理的。 记录2应该的满分。
         if fine_joption == fine_record:  # 三个元素都相等
             pass
@@ -205,9 +205,9 @@ def score_mix(joption, lrecord):
             coarse_joption[1] = 1
 
         coarse_record = [0, 0]
-        if record.mix_small_stone_dosage != -1:
+        if record.mix_small_stone_dosage > 0.1:
             coarse_record[0] = 1
-        if record.mix_big_stone_dosage != -1:
+        if record.mix_big_stone_dosage > 0.1:
             coarse_record[1] = 1
 
         if coarse_joption == coarse_record:  # 两个元素都相等

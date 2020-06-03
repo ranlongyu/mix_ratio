@@ -186,6 +186,7 @@ def compute_min_max(lrecord, joption):
     for item in itemli:
         min_max[item][0] = 40  # max(40, min_max[item][0])
         min_max[item][1] = 60  # min(60, min_max[item][1])
+
     return min_max
 
 
